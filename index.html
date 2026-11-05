@@ -1,0 +1,2928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FarmaEnf - Guia Farmacológico & Cálculos de Enfermagem</title>
+  <meta name="description" content="Guia farmacológico para estudantes da saúde com resumos, indicações, contraindicações e calculadora passo a passo de enfermagem." />
+  <meta property="og:title" content="FarmaEnf - Guia & Cálculos de Medicamentos" />
+  <meta property="og:description" content="Guia completo de remédios e calculadora passo a passo de enfermagem para estudantes da saúde." />
+  <meta property="og:type" content="website" />
+  
+  <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              300: '#5eead4',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+              950: '#042f2e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .font-mono-numbers {
+      font-family: 'JetBrains Mono', monospace;
+      font-feature-settings: "tnum";
+    }
+    /* Hide scrollbars for filter rows */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Drop animation */
+    @keyframes dripFall {
+      0% { transform: translateY(0) scale(0.8); opacity: 0.2; }
+      50% { opacity: 1; transform: translateY(28px) scale(1.1); }
+      100% { transform: translateY(52px) scale(0.9); opacity: 0; }
+    }
+    .drip-animate {
+      animation: dripFall 0.4s ease-in forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-16 sm:pb-8">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="bg-white border-b border-slate-200/90 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-teal-700 text-white flex items-center justify-center shadow-xs">
+          <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-none">
+              FarmaEnf
+            </h1>
+            <span class="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded font-medium">
+              Guia & Cálculos
+            </span>
+          </div>
+          <p class="text-xs text-slate-600 hidden sm:block mt-0.5">
+            Farmacologia clínica e matemática aplicada para estudantes da saúde e enfermagem
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Tab Switcher -->
+      <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+        <button
+          id="btn-tab-drugs"
+          onclick="switchMainTab('drugs')"
+          class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-slate-900 shadow-xs"
+        >
+          <i data-lucide="pill" class="w-3.5 h-3.5 text-teal-700"></i>
+          <span>Guia de Medicamentos</span>
+        </button>
+        <button
+          id="btn-tab-calculators"
+          onclick="switchMainTab('calculators')"
+          class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-700 hover:text-slate-900"
+        >
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-teal-700"></i>
+          <span>Cálculos de Enfermagem</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 pt-6 flex-1">
+
+    <!-- ================= VIEW 1: GUIA DE MEDICAMENTOS ================= -->
+    <section id="view-drugs" class="space-y-6">
+      <!-- Hero Banner -->
+      <div class="bg-gradient-to-r from-teal-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div class="max-w-2xl">
+          <span class="text-xs font-semibold uppercase tracking-wider text-teal-300 block mb-1">
+            Guia Farmacológico Rápido
+          </span>
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight">
+            Medicamentos, Cuidados de Enfermagem & Segurança
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+            Consulte indicações clínicas, contraindicações graves, efeitos colaterais comuns, vias de administração e os cuidados essenciais à beira do leito para a sua prática e estágio.
+          </p>
+        </div>
+      </div>
+
+      <!-- Search & Filters Card -->
+      <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+        <!-- Search bar -->
+        <div class="relative">
+          <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3.5 top-3"></i>
+          <input
+            id="drug-search-input"
+            type="text"
+            oninput="handleSearchInput(this.value)"
+            placeholder="Buscar por remédio, nome comercial (ex: Novalgina, Decadron, Clexane) ou indicação..."
+            class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-11 pr-10 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
+          />
+          <button
+            id="drug-search-clear"
+            onclick="clearSearchInput()"
+            class="hidden absolute right-3 top-3 text-slate-400 hover:text-slate-700"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Categories bar -->
+        <div>
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            <span>Classes Farmacológicas</span>
+            <button
+              id="btn-clear-filters"
+              onclick="clearAllFilters()"
+              class="hidden text-teal-700 hover:text-teal-900 normal-case font-medium flex items-center gap-1"
+            >
+              Limpar filtros
+            </button>
+          </div>
+          <div id="categories-container" class="flex items-center gap-1.5 overflow-x-auto pb-1.5 no-scrollbar">
+            <!-- Dynamically populated categories -->
+          </div>
+        </div>
+
+        <!-- Route & High-alert & Bookmark Toggles -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-500 font-medium">Via:</span>
+            <div id="routes-container" class="flex gap-1 bg-slate-100 p-0.5 rounded-lg">
+              <!-- Dynamically populated routes -->
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              id="btn-filter-high-alert"
+              onclick="toggleFilterHighAlert()"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 transition-colors"
+            >
+              <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-600"></i>
+              <span>Alta Vigilância (MAV)</span>
+            </button>
+
+            <button
+              id="btn-filter-bookmarks"
+              onclick="toggleFilterBookmarks()"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 transition-colors"
+            >
+              <i data-lucide="bookmark" class="w-3.5 h-3.5 text-slate-400"></i>
+              <span>Salvos (<span id="bookmark-count">0</span>)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counter -->
+      <div class="flex items-center justify-between text-xs text-slate-500 px-1">
+        <span id="drugs-count-text">Carregando medicamentos...</span>
+      </div>
+
+      <!-- Drugs Grid -->
+      <div id="drugs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Drug Cards populated by JS -->
+      </div>
+    </section>
+
+    <!-- ================= VIEW 2: CÁLCULOS DE ENFERMAGEM ================= -->
+    <section id="view-calculators" class="hidden space-y-6">
+      <!-- Calculators Sub-Navigation -->
+      <div class="bg-white rounded-xl p-2 border border-slate-200 shadow-xs">
+        <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+          <button onclick="switchCalcTab('dose-volume')" id="subtab-dose-volume" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-teal-700 text-white shadow-xs">
+            <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+            <span>Dose & Volume</span>
+          </button>
+          <button onclick="switchCalcTab('gotas')" id="subtab-gotas" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100">
+            <i data-lucide="droplet" class="w-3.5 h-3.5"></i>
+            <span>Gotas & Microgotas</span>
+          </button>
+          <button onclick="switchCalcTab('regra-tres')" id="subtab-regra-tres" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>Regra de Três</span>
+          </button>
+          <button onclick="switchCalcTab('conversoes')" id="subtab-conversoes" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100">
+            <i data-lucide="arrow-left-right" class="w-3.5 h-3.5"></i>
+            <span>Conversão & %</span>
+          </button>
+          <button onclick="switchCalcTab('penicilina')" id="subtab-penicilina" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100">
+            <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
+            <span>Penicilina Cristalina</span>
+          </button>
+          <button onclick="switchCalcTab('treino')" id="subtab-treino" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100">
+            <i data-lucide="trophy" class="w-3.5 h-3.5"></i>
+            <span>Modo Treino (Quiz)</span>
+          </button>
+          <button onclick="switchCalcTab('formulas')" id="subtab-formulas" class="subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            <span>Guia de Bolso</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. DOSE & VOLUME PANE -->
+      <div id="pane-dose-volume" class="calc-pane space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="calculator" class="w-5 h-5 text-teal-600"></i>
+                Cálculo de Dose e Volume (Apresentação Hospitalar)
+              </h2>
+              <p class="text-sm text-slate-500 mt-1">
+                Descubra exatamente quantos mL aspirar da ampola ou frasco reconstituído com base na prescrição médica.
+              </p>
+            </div>
+            <button onclick="resetDoseVolume()" class="self-start sm:self-auto flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              Limpar Campos
+            </button>
+          </div>
+          <!-- Presets -->
+          <div class="mt-4 pt-4 border-t border-slate-100">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Exemplos Práticos Frequentes:</span>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="applyDosePreset(750, 'mg', 1000, 'mg', 2)" class="text-xs bg-slate-50 hover:bg-teal-50 hover:text-teal-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">Dipirona 750mg (Ampola 1g / 2mL)</button>
+              <button onclick="applyDosePreset(400, 'mg', 1000, 'mg', 10)" class="text-xs bg-slate-50 hover:bg-teal-50 hover:text-teal-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">Ceftriaxona 400mg (Frasco 1g / 10mL)</button>
+              <button onclick="applyDosePreset(4, 'mg', 10, 'mg', 2.5)" class="text-xs bg-slate-50 hover:bg-teal-50 hover:text-teal-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">Dexametasona 4mg (Ampola 10mg / 2.5mL)</button>
+              <button onclick="applyDosePreset(2, 'mg', 10, 'mg', 10)" class="text-xs bg-slate-50 hover:bg-teal-50 hover:text-teal-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">Morfina 2mg (Rediluição 10mg / 10mL)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-3">
+              <span class="text-xs font-semibold uppercase tracking-wider text-teal-700 block">1. Prescrição Médica</span>
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Dose prescrita pelo médico:</label>
+                <div class="flex gap-2">
+                  <input id="dv-presc-dose" type="number" step="any" value="750" oninput="calcDoseVolume()" placeholder="Ex: 750" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-teal-500 font-mono-numbers">
+                  <select id="dv-presc-unit" onchange="calcDoseVolume()" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 font-medium">
+                    <option value="mg" selected>mg</option>
+                    <option value="g">g</option>
+                    <option value="mcg">mcg</option>
+                    <option value="UI">UI</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-3">
+              <span class="text-xs font-semibold uppercase tracking-wider text-blue-700 block">2. Apresentação Disponível (Frasco / Ampola)</span>
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Massa/Dose no frasco ou ampola:</label>
+                <div class="flex gap-2">
+                  <input id="dv-avail-dose" type="number" step="any" value="1000" oninput="calcDoseVolume()" placeholder="Ex: 1000" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 font-mono-numbers">
+                  <select id="dv-avail-unit" onchange="calcDoseVolume()" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 font-medium">
+                    <option value="mg" selected>mg</option>
+                    <option value="g">g</option>
+                    <option value="mcg">mcg</option>
+                    <option value="UI">UI</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Volume de diluição ou líquido da ampola (mL):</label>
+                <div class="relative">
+                  <input id="dv-avail-vol" type="number" step="any" value="2" oninput="calcDoseVolume()" placeholder="Ex: 2" class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-12 py-2 text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 font-mono-numbers">
+                  <span class="absolute right-3 top-2 text-sm text-slate-400 font-medium">mL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div id="dv-result-card" class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs h-full flex flex-col justify-between">
+              <!-- Dynamically populated step-by-step resolution -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. GOTAS E MICROGOTAS PANE -->
+      <div id="pane-gotas" class="calc-pane hidden space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="droplet" class="w-5 h-5 text-sky-600"></i>
+                Cálculo de Gotas e Microgotas por Minuto
+              </h2>
+              <p class="text-sm text-slate-500 mt-1">
+                Fórmulas oficiais para tempo em Horas e em Minutos (Macrogotas: 1 mL = 20 gotas; Microgotas: 1 mL = 60 microgotas).
+              </p>
+            </div>
+            <button onclick="resetDripRate()" class="self-start sm:self-auto flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              Limpar
+            </button>
+          </div>
+          <!-- Presets -->
+          <div class="mt-4 pt-4 border-t border-slate-100">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Prescrições Frequentes:</span>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="applyDripPreset(500, 8, 'h')" class="text-xs bg-slate-50 hover:bg-sky-50 hover:text-sky-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">SF 500 mL em 8 horas</button>
+              <button onclick="applyDripPreset(1000, 12, 'h')" class="text-xs bg-slate-50 hover:bg-sky-50 hover:text-sky-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">SF 1000 mL em 12 horas</button>
+              <button onclick="applyDripPreset(100, 30, 'min')" class="text-xs bg-slate-50 hover:bg-sky-50 hover:text-sky-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">Antibiótico 100 mL em 30 min</button>
+              <button onclick="applyDripPreset(100, 60, 'min')" class="text-xs bg-slate-50 hover:bg-sky-50 hover:text-sky-700 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">Antibiótico 100 mL em 60 min</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Parâmetros da Infusão</span>
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Volume total prescrito a infundir:</label>
+                <div class="relative">
+                  <input id="drip-volume" type="number" step="any" value="500" oninput="calcDripRate()" placeholder="Ex: 500" class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-12 py-2 text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 font-mono-numbers">
+                  <span class="absolute right-3 top-2 text-sm text-slate-400 font-medium">mL</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Tempo total de infusão:</label>
+                <div class="flex gap-2">
+                  <input id="drip-time" type="number" step="any" value="8" oninput="calcDripRate()" placeholder="Ex: 8" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 font-mono-numbers">
+                  <div class="flex bg-slate-100 rounded-lg p-1 border border-slate-200">
+                    <button id="btn-time-h" type="button" onclick="setDripTimeUnit('h')" class="px-3 py-1 text-xs font-medium rounded-md bg-white text-slate-900 shadow-xs">Horas (h)</button>
+                    <button id="btn-time-min" type="button" onclick="setDripTimeUnit('min')" class="px-3 py-1 text-xs font-medium rounded-md text-slate-600 hover:text-slate-900">Minutos (min)</button>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1.5">Tipo de Equipo:</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button id="btn-equipo-macro" type="button" onclick="setEquipoType('macro')" class="p-3 rounded-lg border text-left bg-sky-50/80 border-sky-400 ring-2 ring-sky-300/40">
+                    <div class="flex items-center gap-2">
+                      <i data-lucide="droplet" class="w-4 h-4 text-sky-600"></i>
+                      <span class="text-xs font-semibold text-slate-900">Macrogotas</span>
+                    </div>
+                    <span class="text-xs text-slate-500 block mt-1">1 mL = 20 gotas</span>
+                  </button>
+                  <button id="btn-equipo-micro" type="button" onclick="setEquipoType('micro')" class="p-3 rounded-lg border text-left bg-white border-slate-200 hover:bg-slate-50">
+                    <div class="flex items-center gap-2">
+                      <span class="flex gap-0.5"><span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span><span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span></span>
+                      <span class="text-xs font-semibold text-slate-900">Microgotas</span>
+                    </div>
+                    <span class="text-xs text-slate-500 block mt-1">1 mL = 60 microgotas</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Drip chamber simulator -->
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                  <i data-lucide="activity" class="w-4 h-4 text-sky-600"></i>
+                  Simulador de Câmara de Gotejamento
+                </span>
+                <button id="btn-drip-toggle" onclick="toggleDripAnimation()" class="text-xs text-slate-500 hover:text-slate-900 underline">Pausar</button>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="relative w-16 h-28 bg-slate-100 rounded-lg border-2 border-slate-300 flex flex-col items-center justify-between py-2 overflow-hidden">
+                  <div class="w-2.5 h-3 bg-slate-400 rounded-b-sm"></div>
+                  <div id="visual-droplet" class="w-3 h-3 bg-sky-500 rounded-full" style="border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;"></div>
+                  <div class="w-full h-5 bg-sky-200/80 border-t border-sky-300"></div>
+                </div>
+                <div class="flex-1 space-y-1 text-xs">
+                  <span class="font-semibold text-slate-800 block">Ritmo Estimado:</span>
+                  <p id="drip-interval-text" class="text-slate-600">1 gota a cada 1.43 segundos.</p>
+                  <p class="text-slate-400 text-xs">Simulação visual com base na velocidade calculada.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div id="drip-result-card" class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs h-full flex flex-col justify-between">
+              <!-- Dynamically populated drip calculation -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. REGRA DE TRÊS PANE -->
+      <div id="pane-regra-tres" class="calc-pane hidden space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-teal-600"></i>
+                Regra de Três Simples Direta (Didática Interativa)
+              </h2>
+              <p class="text-sm text-slate-500 mt-1">
+                O método universal mais utilizado em cálculo de medicamentos na enfermagem e farmacologia clínica.
+              </p>
+            </div>
+            <button onclick="resetRuleOfThree()" class="self-start sm:self-auto flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              Limpar
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">1. Dados Conhecidos (Linha Superior)</span>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs font-medium text-slate-700 block mb-1">Valor A:</label>
+                  <div class="flex gap-1.5">
+                    <input id="r3-a" type="number" step="any" value="500" oninput="calcRuleOfThree()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-mono-numbers">
+                    <input id="r3-ua" type="text" value="mg" oninput="calcRuleOfThree()" class="w-14 bg-slate-50 border border-slate-300 rounded-lg px-1.5 py-1.5 text-xs text-center font-medium">
+                  </div>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-slate-700 block mb-1">Está para Valor B:</label>
+                  <div class="flex gap-1.5">
+                    <input id="r3-b" type="number" step="any" value="2" oninput="calcRuleOfThree()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-mono-numbers">
+                    <input id="r3-ub" type="text" value="mL" oninput="calcRuleOfThree()" class="w-14 bg-slate-50 border border-slate-300 rounded-lg px-1.5 py-1.5 text-xs text-center font-medium">
+                  </div>
+                </div>
+              </div>
+
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block pt-2 border-t border-slate-100">2. Proposta / Prescrição (Linha Inferior)</span>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs font-medium text-slate-700 block mb-1">Valor C (Dose prescrita):</label>
+                  <div class="flex gap-1.5">
+                    <input id="r3-c" type="number" step="any" value="250" oninput="calcRuleOfThree()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-mono-numbers">
+                    <input id="r3-uc" type="text" value="mg" oninput="calcRuleOfThree()" class="w-14 bg-slate-50 border border-slate-300 rounded-lg px-1.5 py-1.5 text-xs text-center font-medium">
+                  </div>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-slate-700 block mb-1">Incógnita (X):</label>
+                  <div class="flex gap-1.5">
+                    <div class="w-full bg-teal-50 border border-teal-300 rounded-lg px-2.5 py-1.5 text-sm font-bold text-teal-800 flex items-center justify-center font-mono-numbers">X</div>
+                    <div id="r3-display-ub" class="w-14 bg-slate-100 border border-slate-300 rounded-lg px-1.5 py-1.5 text-xs text-center font-medium text-slate-600 flex items-center justify-center">mL</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div id="r3-result-card" class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs h-full flex flex-col justify-between">
+              <!-- Dynamically populated rule of three resolution -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CONVERSÕES & % PANE -->
+      <div id="pane-conversoes" class="calc-pane hidden space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="arrow-left-right" class="w-5 h-5 text-indigo-600"></i>
+            Conversão de Unidades Médicas & Soluções em Porcentagem
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Converta massa (g, mg, mcg), volume (L, mL) e desvende concentrações percentuais (% m/v).
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Mass -->
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <span class="text-xs font-semibold uppercase tracking-wider text-indigo-700">Conversor de Massa (g ↔ mg ↔ mcg)</span>
+              <span class="text-xs text-slate-400 font-mono-numbers">Base 1000</span>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-slate-700 block mb-1">Valor inicial:</label>
+              <div class="flex gap-2">
+                <input id="conv-mass-val" type="number" step="any" value="1" oninput="calcConversions()" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-mono-numbers">
+                <select id="conv-mass-unit" onchange="calcConversions()" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold text-slate-800">
+                  <option value="g" selected>Gramas (g)</option>
+                  <option value="mg">Miligramas (mg)</option>
+                  <option value="mcg">Microgramas (mcg)</option>
+                </select>
+              </div>
+            </div>
+            <div id="conv-mass-results" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2.5 font-mono-numbers text-xs">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Volume -->
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <span class="text-xs font-semibold uppercase tracking-wider text-sky-700">Conversor de Volume (L ↔ mL)</span>
+              <span class="text-xs text-slate-400 font-mono-numbers">Base 1000</span>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-slate-700 block mb-1">Valor inicial:</label>
+              <div class="flex gap-2">
+                <input id="conv-vol-val" type="number" step="any" value="1" oninput="calcConversions()" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-mono-numbers">
+                <select id="conv-vol-unit" onchange="calcConversions()" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold text-slate-800">
+                  <option value="L" selected>Litros (L)</option>
+                  <option value="mL">Mililitros (mL)</option>
+                </select>
+              </div>
+            </div>
+            <div id="conv-vol-results" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2.5 font-mono-numbers text-xs">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Solutions % -->
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+          <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i data-lucide="layers" class="w-5 h-5 text-emerald-600"></i>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Desvendando Soluções em Porcentagem (% m/v)</h3>
+              <p class="text-xs text-slate-500">Soro Glicosado (5%, 10%), Cloreto de Sódio (0,9%, 20%), Bicarbonato de Sódio (8,4%).</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-3">
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Concentração da solução (%):</label>
+                <div class="relative">
+                  <input id="sol-percent" type="number" step="any" value="5" oninput="calcConversions()" class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-10 py-2 text-sm font-mono-numbers">
+                  <span class="absolute right-3 top-2 text-sm text-slate-400 font-bold">%</span>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Volume total do frasco ou ampola:</label>
+                <div class="relative">
+                  <input id="sol-volume" type="number" step="any" value="500" oninput="calcConversions()" class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-12 py-2 text-sm font-mono-numbers">
+                  <span class="absolute right-3 top-2 text-sm text-slate-400 font-medium">mL</span>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <button onclick="applySolPreset(5, 500)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">SG 5% 500mL</button>
+                <button onclick="applySolPreset(10, 500)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">SG 10% 500mL</button>
+                <button onclick="applySolPreset(0.9, 1000)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">SF 0,9% 1000mL</button>
+                <button onclick="applySolPreset(50, 20)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">Glicose 50% 20mL</button>
+                <button onclick="applySolPreset(20, 10)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">NaCl 20% 10mL</button>
+              </div>
+            </div>
+            <div id="sol-result-card" class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. PENICILINA CRISTALINA PANE -->
+      <div id="pane-penicilina" class="calc-pane hidden space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="flask-conical" class="w-5 h-5 text-violet-600"></i>
+            Cálculo Especial: Penicilina G Cristalina (Volume do Pó)
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">
+            O pó liofilizado da Penicilina Cristalina ocupa volume físico mensurável. Compreenda a regra clássica de preparo e aspiração.
+          </p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 text-amber-900">
+          <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+          <div class="text-xs space-y-1">
+            <strong class="text-amber-950 font-semibold block text-sm">Regra Fundamental do Soluto Liofilizado:</strong>
+            <p>
+              • Frasco de <strong>5.000.000 UI</strong>: O pó ocupa exatamente <strong>2 mL</strong> de espaço.<br>
+              • Frasco de <strong>10.000.000 UI</strong>: O pó ocupa exatamente <strong>4 mL</strong> de espaço.<br>
+              Portanto, o volume total da solução é sempre o <em>volume de água adicionado + o volume do próprio pó</em>!
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">1. Escolha do Frasco Disponível</span>
+              <div class="grid grid-cols-2 gap-2">
+                <button id="btn-pen-5m" onclick="setPenVial('5M')" class="p-3 rounded-lg border text-left bg-violet-50 border-violet-400 ring-2 ring-violet-300/40">
+                  <span class="text-xs font-bold text-slate-900 block">5.000.000 UI</span>
+                  <span class="text-xs text-slate-500 block mt-0.5">Pó ocupa 2 mL</span>
+                </button>
+                <button id="btn-pen-10m" onclick="setPenVial('10M')" class="p-3 rounded-lg border text-left bg-white border-slate-200 hover:bg-slate-50">
+                  <span class="text-xs font-bold text-slate-900 block">10.000.000 UI</span>
+                  <span class="text-xs text-slate-500 block mt-0.5">Pó ocupa 4 mL</span>
+                </button>
+              </div>
+
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Volume de Água Destilada (AD) adicionado:</label>
+                <div class="relative">
+                  <input id="pen-added-water" type="number" step="any" value="8" oninput="calcPenicillin()" class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-12 py-2 text-sm font-mono-numbers">
+                  <span class="absolute right-3 top-2 text-sm text-slate-400 font-medium">mL</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-xs font-medium text-slate-700 block mb-1">Dose prescrita pelo médico:</label>
+                <div class="relative">
+                  <input id="pen-presc-ui" type="number" step="any" value="2500000" oninput="calcPenicillin()" class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-12 py-2 text-sm font-mono-numbers">
+                  <span class="absolute right-3 top-2 text-sm text-slate-400 font-medium">UI</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5 mt-2">
+                  <button onclick="setPenDose(2000000)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">2.000.000 UI</button>
+                  <button onclick="setPenDose(2500000)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">2.500.000 UI</button>
+                  <button onclick="setPenDose(4000000)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">4.000.000 UI</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div id="pen-result-card" class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs h-full flex flex-col justify-between">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. MODO TREINO (QUIZ) PANE -->
+      <div id="pane-treino" class="calc-pane hidden space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i>
+                Simulador de Casos Clínicos & Provas de Enfermagem
+              </h2>
+              <p class="text-sm text-slate-500 mt-1">
+                Pratique com prescrições reais do dia a dia hospitalar e confira as resoluções detalhadas passo a passo.
+              </p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                <span class="text-slate-500">Desempenho:</span>
+                <span id="quiz-score-badge" class="font-bold text-slate-800 font-mono-numbers">0 / 0 (0%)</span>
+              </div>
+              <button onclick="resetQuizScore()" title="Reiniciar pontuação" class="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Quiz Category Filter -->
+          <div id="quiz-categories" class="flex flex-wrap items-center gap-1.5 mt-4 pt-4 border-t border-slate-100">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div id="quiz-card" class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- 7. GUIA DE BOLSO DE FÓRMULAS PANE -->
+      <div id="pane-formulas" class="calc-pane hidden space-y-6">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="book-open" class="w-5 h-5 text-teal-600"></i>
+            Guia de Bolso & Tabela de Fórmulas de Enfermagem
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Resumo condensado das fórmulas oficiais exigidas em estágios clínicos, residências e concursos da área da saúde.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+              <i data-lucide="droplet" class="w-4 h-4 text-sky-600"></i>
+              <h3 class="text-sm font-bold text-slate-900">Gotejamento com Tempo em HORAS</h3>
+            </div>
+            <div class="space-y-3 font-mono-numbers text-xs">
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                <span class="font-sans font-semibold text-slate-800 block text-xs">Macrogotas (gotas/min):</span>
+                <div class="p-2 bg-white rounded border border-sky-200 text-sky-950 font-bold text-center text-sm">
+                  Gotas/min = Volume (mL) / (Tempo em horas × 3)
+                </div>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                <span class="font-sans font-semibold text-slate-800 block text-xs">Microgotas (microgotas/min):</span>
+                <div class="p-2 bg-white rounded border border-blue-200 text-blue-950 font-bold text-center text-sm">
+                  Microgotas/min = Volume (mL) / Tempo em horas
+                </div>
+              </div>
+              <div class="text-slate-500 font-sans text-xs pt-1">
+                • <strong>Relação:</strong> 1 Macrogota = 3 Microgotas.<br>
+                • <strong>Bomba de Infusão:</strong> mL/h é numericamente idêntico a Microgotas/min.
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+              <i data-lucide="droplet" class="w-4 h-4 text-blue-600"></i>
+              <h3 class="text-sm font-bold text-slate-900">Gotejamento com Tempo em MINUTOS</h3>
+            </div>
+            <div class="space-y-3 font-mono-numbers text-xs">
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                <span class="font-sans font-semibold text-slate-800 block text-xs">Macrogotas (gotas/min):</span>
+                <div class="p-2 bg-white rounded border border-sky-200 text-sky-950 font-bold text-center text-sm">
+                  Gotas/min = (Volume em mL × 20) / Tempo em minutos
+                </div>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                <span class="font-sans font-semibold text-slate-800 block text-xs">Microgotas (microgotas/min):</span>
+                <div class="p-2 bg-white rounded border border-blue-200 text-blue-950 font-bold text-center text-sm">
+                  Microgotas/min = (Volume em mL × 60) / Tempo em minutos
+                </div>
+              </div>
+              <div class="text-slate-500 font-sans text-xs pt-1">
+                • Usado em infusões intermitentes de antibióticos e analgésicos que correm em 15, 20, 30 ou 45 min.
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+              <i data-lucide="arrow-right" class="w-4 h-4 text-teal-600"></i>
+              <h3 class="text-sm font-bold text-slate-900">Cálculo de Dose e Volume (Regra de Três)</h3>
+            </div>
+            <div class="space-y-2 text-xs text-slate-700">
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 font-mono-numbers space-y-1.5">
+                <p class="text-slate-800">Dose Disponível no Frasco ───── Volume Total (mL)</p>
+                <p class="text-teal-800 font-bold">Dose Prescrita pelo Médico ───── X (Volume a Aspirar)</p>
+                <p class="text-slate-500 pt-1 text-xs">X = (Dose Prescrita × Volume Total) / Dose Disponível</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+              <i data-lucide="alert-circle" class="w-4 h-4 text-violet-600"></i>
+              <h3 class="text-sm font-bold text-slate-900">Penicilina Cristalina (Volume do Pó)</h3>
+            </div>
+            <div class="space-y-2 text-xs text-slate-700">
+              <div class="p-3 bg-violet-50/60 rounded-lg border border-violet-200 space-y-1.5">
+                <p>• <strong>5.000.000 UI</strong>: O pó ocupa <strong>2 mL</strong>.</p>
+                <p class="text-slate-600">Reconstituição: 8 mL AD + 2 mL pó = 10 mL total.</p>
+                <p class="pt-1">• <strong>10.000.000 UI</strong>: O pó ocupa <strong>4 mL</strong>.</p>
+                <p class="text-slate-600">Reconstituição: 6 mL AD + 4 mL pó = 10 mL total.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-3">
+          <h3 class="text-sm font-bold text-slate-900">Tabela de Equivalências de Bolso</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono-numbers">
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <span class="text-slate-400 block font-sans text-xs">Massa (g → mg)</span>
+              <span class="font-bold text-slate-900">1 g = 1.000 mg</span>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <span class="text-slate-400 block font-sans text-xs">Massa (mg → mcg)</span>
+              <span class="font-bold text-slate-900">1 mg = 1.000 mcg</span>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <span class="text-slate-400 block font-sans text-xs">Volume (L → mL)</span>
+              <span class="font-bold text-slate-900">1 L = 1.000 mL</span>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <span class="text-slate-400 block font-sans text-xs">Gotas (mL → gotas)</span>
+              <span class="font-bold text-slate-900">1 mL = 20 gotas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= DRUG DETAIL MODAL ================= -->
+  <div id="drug-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5">
+    <div id="drug-modal-content" class="relative bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[92vh] flex flex-col">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ================= MOBILE BOTTOM NAVIGATION ================= -->
+  <div class="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-30 px-6 py-2 flex items-center justify-around shadow-lg">
+    <button onclick="switchMainTab('drugs')" id="mob-btn-drugs" class="flex flex-col items-center gap-1 text-xs font-semibold py-1 text-teal-700">
+      <i data-lucide="pill" class="w-5 h-5"></i>
+      <span>Remédios</span>
+    </button>
+    <button onclick="switchMainTab('calculators')" id="mob-btn-calculators" class="flex flex-col items-center gap-1 text-xs font-semibold py-1 text-slate-700 hover:text-slate-900">
+      <i data-lucide="calculator" class="w-5 h-5"></i>
+      <span>Cálculos</span>
+    </button>
+  </div>
+
+  <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
+  <script>
+    /* ========================================================
+       DATA: DRUGS DATABASE
+       ======================================================== */
+    const DRUGS = [
+      {
+        id: 'dipirona',
+        name: 'Dipirona Sódica',
+        genericName: 'Dipirona Sódica (Metamizol)',
+        commercialNames: ['Novalgina', 'Anador', 'Dipimed'],
+        category: 'Analgésicos e Antitérmicos',
+        summary: 'Analgésico, antipirético e espasmolítico de primeira linha amplamente utilizado para dor aguda e febre refratária.',
+        mechanism: 'Inibe a síntese de prostaglandinas no sistema nervoso central e periférico e atua em receptores canabinoides.',
+        indications: ['Dor aguda leve a moderada', 'Febre alta refratária', 'Cólicas biliares e renais', 'Dor pós-operatória'],
+        contraindications: ['Hipersensibilidade a pirazolonas', 'Histórico de agranulocitose', 'Deficiência congênita de G6PD', 'Porfiria hepática'],
+        commonSideEffects: ['Hipotensão transitória se infusão rápida', 'Náuseas e dor epigástrica', 'Rash cutâneo leve', 'Sonolência'],
+        severeSideEffects: ['Agranulocitose (grave)', 'Choque anafilático', 'Síndrome de Stevens-Johnson'],
+        routes: ['VO', 'EV / IV', 'IM'],
+        nursingPrecautions: [
+          'Administração EV LENTA (mínimo 1 mL/minuto) ou diluída em 100 mL de SF 0,9% para prevenir hipotensão súbita.',
+          'Aferir Pressão Arterial antes e após a infusão parenteral.',
+          'Confirmar ausência de alergia prévia a AINEs ou dipirona.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '500 mg/mL (2 mL = 1000 mg)', doseUnit: 'mg', doseValue: 1000, volumeValue: 2 },
+          { form: 'Comprimido', concentration: '500 mg', doseUnit: 'mg', doseValue: 500 },
+          { form: 'Comprimido', concentration: '1 g (1000 mg)', doseUnit: 'g', doseValue: 1 },
+          { form: 'Gotas Solução', concentration: '500 mg/mL (20 gts)', doseUnit: 'mg', doseValue: 500, volumeValue: 1 }
+        ],
+        dilutionGuide: 'EV: Diluir 1 a 2 mL em 50 a 100 mL de SF 0,9% ou SG 5% e infundir em 15-20 minutos.'
+      },
+      {
+        id: 'paracetamol',
+        name: 'Paracetamol',
+        genericName: 'Paracetamol (Acetaminofeno)',
+        commercialNames: ['Tylenol', 'Parador', 'Termidol'],
+        category: 'Analgésicos e Antitérmicos',
+        summary: 'Analgésico e antitérmico eficaz, seguro em pediatria e gestantes dentro das doses terapêuticas recomendadas.',
+        mechanism: 'Inibe a COX a nível central, bloqueando mediadores de dor e centro termorregulador hipotalâmico.',
+        indications: ['Febre de qualquer etiologia', 'Cefaleias e mialgias', 'Dores odontológicas', 'Artralgia leve a moderada'],
+        contraindications: ['Insuficiência hepática grave ou cirrose', 'Hipersensibilidade ao paracetamol', 'Alcoolismo ativo'],
+        commonSideEffects: ['Náuseas leves e constipação', 'Rash eritematoso', 'Cefaleia discreta'],
+        severeSideEffects: ['Hepatotoxicidade grave e necrose hepática por sobredose (> 4g/dia)', 'Nefrotoxicidade por abuso crônico'],
+        routes: ['VO', 'EV / IV'],
+        nursingPrecautions: [
+          'Dose máxima diária: 4000 mg/dia em adultos e 2000-3000 mg/dia em idosos/desnutridos.',
+          'Verificar associações antigripais para não somar doses e causar intoxicação involuntária.',
+          'Antídoto específico em intoxicação: N-acetilcisteína (NAC).'
+        ],
+        presentations: [
+          { form: 'Comprimido', concentration: '500 mg', doseUnit: 'mg', doseValue: 500 },
+          { form: 'Comprimido', concentration: '750 mg', doseUnit: 'mg', doseValue: 750 },
+          { form: 'Gotas Solução', concentration: '200 mg/mL', doseUnit: 'mg', doseValue: 200, volumeValue: 1 }
+        ],
+        dilutionGuide: 'Solução EV pronta: infundir em 15 minutos.'
+      },
+      {
+        id: 'morfina',
+        name: 'Sulfato de Morfina',
+        genericName: 'Morfina',
+        commercialNames: ['Dimorf', 'Dolo-Morfina'],
+        category: 'Analgésicos e Antitérmicos',
+        summary: 'Opioide potente padrão-ouro no alívio de dores moderadas a severas oncológicas, politrauma e IAM.',
+        mechanism: 'Agonista puro dos receptores opioides Mu (μ) e Kappa (κ) no SNC, bloqueando a transmissão nociceptiva.',
+        indications: ['Dor aguda severa (politrauma, pós-op grande)', 'Infarto Agudo do Miocárdio (IAM)', 'Edema agudo de pulmão cardiogênico', 'Dor oncológica'],
+        contraindications: ['Depressão respiratória sem via aérea avançada', 'Asma aguda grave ou DPOC hipercapnica grave', 'Íleo paralítico ou abdome obstrutivo'],
+        commonSideEffects: ['Sonolência e sedação', 'Constipação intestinal intensa', 'Náuseas e vômitos', 'Prurido corporal', 'Retenção urinária'],
+        severeSideEffects: ['Depressão respiratória grave (FR < 8-10 irpm)', 'Hipotensão postural e bradicardia', 'Dependência física'],
+        routes: ['EV / IV', 'SC', 'IM', 'VO'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV). Checagem dupla obrigatória.',
+          'Monitorar FR e SpO2 antes e após cada dose.',
+          'Se FR < 10 irpm com miose puntiforme e torpor: suspender e avisar o médico.',
+          'Antídoto imediato à disposição no posto: NALOXONA (Narcan).'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '10 mg/mL (1 mL)', doseUnit: 'mg', doseValue: 10, volumeValue: 1 },
+          { form: 'Ampola', concentration: '1 mg/mL (2 mL = 2 mg)', doseUnit: 'mg', doseValue: 2, volumeValue: 2 },
+          { form: 'Comprimido', concentration: '30 mg', doseUnit: 'mg', doseValue: 30 }
+        ],
+        dilutionGuide: 'EV direto: diluir 1 ampola (10mg/1mL) em 9 mL de AD (1 mg/mL) e administrar 1 a 2 mg lentamente.',
+        highAlert: true
+      },
+      {
+        id: 'fentanila',
+        name: 'Citrato de Fentanila',
+        genericName: 'Fentanila',
+        commercialNames: ['Fentanil', 'Fentarest'],
+        category: 'Analgésicos e Antitérmicos',
+        summary: 'Opioide sintético ultrarrápido cerca de 100 vezes mais potente que a morfina, usado em anestesia e UTI.',
+        mechanism: 'Potente agonista seletivo dos receptores opioides Mu (μ) com rápido início e lipossolubilidade elevada.',
+        indications: ['Analgesia contínua em ventilação mecânica na UTI', 'Indução anestésica', 'Procedimentos cirúrgicos dolorosos'],
+        contraindications: ['Alergia a opioides sintéticos', 'Depressão respiratória sem via aérea avançada'],
+        commonSideEffects: ['Sedação profunda', 'Hipotensão e bradicardia', 'Boca seca'],
+        severeSideEffects: ['Tórax Rígido (rigidez da musculatura torácica se infusão rápida em bolus)', 'Parada respiratória súbita'],
+        routes: ['EV / IV', 'Tópica'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'Administração em bolus lenta (> 3 a 5 min) para evitar Tórax Rígido.',
+          'Infusão contínua estritamente em Bomba de Infusão Contínua (BIC).',
+          'Material de intubação e Naloxona à beira do leito.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '50 mcg/mL (2 mL = 100 mcg)', doseUnit: 'mcg', doseValue: 100, volumeValue: 2 },
+          { form: 'Frasco-ampola', concentration: '50 mcg/mL (10 mL = 500 mcg)', doseUnit: 'mcg', doseValue: 500, volumeValue: 10 }
+        ],
+        dilutionGuide: 'Infusão contínua em BIC conforme protocolo institucional em SG 5% ou SF 0,9%.',
+        highAlert: true
+      },
+      {
+        id: 'tramadol',
+        name: 'Cloridrato de Tramadol',
+        genericName: 'Tramadol',
+        commercialNames: ['Tramal', 'Dorless', 'Sylador'],
+        category: 'Analgésicos e Antitérmicos',
+        summary: 'Opioide atípico de ação central com efeito dual (receptores opioides e inibição de recaptação de serotonina/noradrenalina).',
+        mechanism: 'Agonista opioide fraco e inibidor da recaptação de noradrenalina e serotonina na via descendente da dor.',
+        indications: ['Dor aguda e crônica moderada a severa', 'Pós-operatório de cirurgias ortopédicas e abdominais'],
+        contraindications: ['Uso concomitante com inibidores da MAO', 'Epilepsia não controlada (baixa o limiar convulsivo)', 'Intoxicação por álcool'],
+        commonSideEffects: ['Náuseas e vômitos frequentes', 'Tontura e sonolência', 'Sudorese e boca seca'],
+        severeSideEffects: ['Convulsões em doses altas', 'Síndrome serotoninérgica', 'Depressão respiratória'],
+        routes: ['EV / IV', 'IM', 'VO', 'SC'],
+        nursingPrecautions: [
+          'EV sempre diluído em 100 mL de SF 0,9% correndo em pelo menos 20 a 30 minutos.',
+          'Infusão rápida causa vertigem súbita, náuseas violentas e vômitos.',
+          'Manter grades da cama elevadas (risco de queda por vertigem).'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '50 mg/mL (1 mL = 50 mg)', doseUnit: 'mg', doseValue: 50, volumeValue: 1 },
+          { form: 'Ampola', concentration: '50 mg/mL (2 mL = 100 mg)', doseUnit: 'mg', doseValue: 100, volumeValue: 2 },
+          { form: 'Cápsula', concentration: '50 mg', doseUnit: 'mg', doseValue: 50 }
+        ],
+        dilutionGuide: 'Diluir 50 mg ou 100 mg em 100 mL de SF 0,9% ou SG 5%. Infundir em 20 a 30 minutos.'
+      },
+      {
+        id: 'cetoprofeno',
+        name: 'Cetoprofeno',
+        genericName: 'Cetoprofeno',
+        commercialNames: ['Profenid', 'Artrinid', 'Flamador'],
+        category: 'Anti-inflamatórios (AINEs e Esteroides)',
+        summary: 'Anti-inflamatório não esteroidal (AINE) potente, com marcada ação analgésica e anti-inflamatória osteoarticular.',
+        mechanism: 'Inibe a síntese de prostaglandinas bloqueando COX-1 e COX-2.',
+        indications: ['Artrites, gota e lombalgias agudas', 'Traumas e entorses', 'Dor pós-cirúrgica'],
+        contraindications: ['Úlcera péptica ou sangramento digestivo', 'Insuficiência renal grave', 'Terceiro trimestre de gestação', 'Histórico de asma por AAS'],
+        commonSideEffects: ['Epigastralgia e pirose', 'Náuseas e dispepsia', 'Cefaleia e vertigem'],
+        severeSideEffects: ['Hemorragia digestiva alta (melena/hematêmese)', 'Insuficiência renal aguda', 'Broncoespasmo grave'],
+        routes: ['EV / IV', 'IM', 'VO'],
+        nursingPrecautions: [
+          'Forma EV: reconstituir com 5 mL de AD e SEMPRE diluir em 100 a 150 mL de SF 0,9% ou SG 5%. Infundir em 20 min.',
+          'NUNCA aplicar EV direto em bolus sem diluição.',
+          'Aplicação IM: injeção profunda no glúteo com técnica em Z.'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola liofilizado EV', concentration: '100 mg pó', doseUnit: 'mg', doseValue: 100 },
+          { form: 'Ampola IM', concentration: '50 mg/mL (2 mL = 100 mg)', doseUnit: 'mg', doseValue: 100, volumeValue: 2 },
+          { form: 'Comprimido', concentration: '100 mg', doseUnit: 'mg', doseValue: 100 }
+        ],
+        dilutionGuide: 'Reconstituir com 5 mL de AD; diluir em frasco de 100 mL de SF 0,9%. Correr em 20 min.'
+      },
+      {
+        id: 'dexametasona',
+        name: 'Fosfato Dissódico de Dexametasona',
+        genericName: 'Dexametasona',
+        commercialNames: ['Decadron', 'Dexametax'],
+        category: 'Anti-inflamatórios (AINEs e Esteroides)',
+        summary: 'Glicocorticoide sintético de longa ação com altíssimo poder anti-inflamatório e mínima retenção de sódio.',
+        mechanism: 'Inibe transcrição de citocinas inflamatórias ligando-se a receptores de glicocorticoides.',
+        indications: ['Edema cerebral tumoral', 'Crises graves de asma e laringite estridulosa', 'Choque anafilático', 'Antiemético na quimioterapia'],
+        contraindications: ['Infecções fúngicas sistêmicas não tratadas', 'Vacinas de vírus vivos durante corticoterapia'],
+        commonSideEffects: ['Hiperglicemia aguda expressiva', 'Insônia e agitação', 'Aumento de apetite e pirose'],
+        severeSideEffects: ['Supressão do eixo HPA após uso prolongado', 'Reativação de tuberculose', 'Úlcera péptica perfurada'],
+        routes: ['EV / IV', 'IM', 'VO'],
+        nursingPrecautions: [
+          'Monitorar glicemia capilar com frequência (eleva fortemente a glicemia).',
+          'A injeção EV rápida pode causar sensação de ardência e calor transitório no períneo; avisar o paciente.',
+          'Não suspender abruptamente após tratamentos longos (> 2 semanas).'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '4 mg/mL (2,5 mL = 10 mg)', doseUnit: 'mg', doseValue: 10, volumeValue: 2.5 },
+          { form: 'Ampola', concentration: '2 mg/mL (1 mL = 2 mg)', doseUnit: 'mg', doseValue: 2, volumeValue: 1 },
+          { form: 'Comprimido', concentration: '4 mg', doseUnit: 'mg', doseValue: 4 }
+        ],
+        dilutionGuide: 'Infundir lentamente (> 2-3 min) pura ou diluída em 50 a 100 mL de SF 0,9%.'
+      },
+      {
+        id: 'ceftriaxona',
+        name: 'Ceftriaxona Sódica',
+        genericName: 'Ceftriaxona',
+        commercialNames: ['Rocefin', 'Triaxin'],
+        category: 'Antibióticos e Antimicrobianos',
+        summary: 'Cefalosporina de 3ª geração de amplo espectro com excelente penetração no sistema nervoso central.',
+        mechanism: 'Inibe a síntese de parede bacteriana por ligação a PBPs.',
+        indications: ['Pneumonias graves', 'Meningite bacteriana', 'Pielonefrite e ITU complicada', 'Sepse hospitalar'],
+        contraindications: ['Anafilaxia a penicilinas e cefalosporinas', 'Neonatos hiperbilirrubinêmicos', 'CO-ADMINISTRAÇÃO COM CÁLCIO (Ringer Lactato) em neonatos'],
+        commonSideEffects: ['Diarreia e náuseas', 'Flebite no sítio de punção', 'Eosinofilia transitória'],
+        severeSideEffects: ['Colite pseudomembranosa por C. difficile', 'Precipitação biliar / pseudolitíase biliar reversível'],
+        routes: ['EV / IV', 'IM'],
+        nursingPrecautions: [
+          'NUNCA MISTURAR NA MESMA VIA COM SOLUÇÕES DE CÁLCIO (como Ringer Lactato). Risco de precipitação letal.',
+          'Via IM: usar lidocaína a 1% como diluente para diminuir a dor (NUNCA usar lidocaína por via EV!).',
+          'Via EV: diluir em 50 a 100 mL de SF 0,9% e infundir em 30 a 60 minutos.'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola EV', concentration: '1 g (1000 mg) pó', doseUnit: 'g', doseValue: 1 },
+          { form: 'Frasco-ampola IM', concentration: '500 mg pó', doseUnit: 'mg', doseValue: 500 },
+          { form: 'Frasco-ampola IM', concentration: '1 g pó + lidocaína 1%', doseUnit: 'g', doseValue: 1 }
+        ],
+        dilutionGuide: 'Reconstituir 1g em 10 mL de AD. Diluir em 50-100 mL de SF 0,9% e infundir em 30 a 60 minutos.'
+      },
+      {
+        id: 'vancomicina',
+        name: 'Cloridrato de Vancomicina',
+        genericName: 'Vancomicina',
+        commercialNames: ['Vancocina', 'Vancomax'],
+        category: 'Antibióticos e Antimicrobianos',
+        summary: 'Glicopeptídeo potente de reserva indicado contra bactérias Gram-positivas resistentes como MRSA.',
+        mechanism: 'Inibe a síntese da parede bacteriana ligando-se a resíduos D-Ala-D-Ala.',
+        indications: ['Infecções por MRSA (Staphylococcus resistente)', 'Endocardite enterocócica', 'Sepse grave hospitalar'],
+        contraindications: ['Hipersensibilidade conhecida à vancomicina'],
+        commonSideEffects: ['Flebite venosa intensa', 'Calafrios e febre', 'Prurido cutâneo'],
+        severeSideEffects: ['Síndrome do Homem Vermelho (Red Man Syndrome) por infusão rápida', 'Nefrotoxicidade', 'Ototoxicidade'],
+        routes: ['EV / IV', 'VO'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'TEMPO DE INFUSÃO OBRIGATÓRIO: mínimo de 60 minutos para cada 1 g (velocidade ≤ 10 mg/minuto).',
+          'Infusão rápida libera histamina maciça causando rubor facial e hipotensão grave (Síndrome do Homem Vermelho).',
+          'Acompanhar função renal (ureia, creatinina) e débito urinário.'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola', concentration: '500 mg pó', doseUnit: 'mg', doseValue: 500 },
+          { form: 'Frasco-ampola', concentration: '1 g (1000 mg) pó', doseUnit: 'g', doseValue: 1 }
+        ],
+        dilutionGuide: 'Reconstituir 1 g em 10 mL de AD. Diluir em 200 a 250 mL de SF 0,9% e infundir em no mínimo 60 a 90 minutos.',
+        highAlert: true
+      },
+      {
+        id: 'penicilina-cristalina',
+        name: 'Benzilpenicilina Potássica (Cristalina)',
+        genericName: 'Penicilina G Cristalina',
+        commercialNames: ['Penicilina Cristalina', 'Aricilina'],
+        category: 'Antibióticos e Antimicrobianos',
+        summary: 'Penicilina bactericida natural parenteral de ação rápida, indicada em neurossífilis, sepse neonatal e endocardites.',
+        mechanism: 'Inibe a síntese da parede bacteriana, provocando lise osmótica rápida.',
+        indications: ['Neurossífilis e sífilis congênita', 'Meningite pneumocócica', 'Endocardite estreptocócica'],
+        contraindications: ['Anafilaxia prévia a penicilinas'],
+        commonSideEffects: ['Dor e queimação na veia', 'Reação de Jarisch-Herxheimer no tratamento da sífilis'],
+        severeSideEffects: ['Hipercalemia e arritmias (1 milhão UI contém ~1,68 mEq de K+)', 'Convulsões em doses maciças', 'Choque anafilático'],
+        routes: ['EV / IV'],
+        nursingPrecautions: [
+          'REGRA DO PÓ: O pó ocupa volume no frasco!',
+          'Frasco 5.000.000 UI ocupa 2 mL de pó (adicionando 8 mL de AD = 10 mL total).',
+          'Frasco 10.000.000 UI ocupa 4 mL de pó (adicionando 6 mL de AD = 10 mL total).',
+          'Nunca infundir rápido pelo risco de sobrecarga de potássio e parada cardíaca.'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola', concentration: '5.000.000 UI (ocupa 2 mL pó)', doseUnit: 'UI', doseValue: 5000000 },
+          { form: 'Frasco-ampola', concentration: '10.000.000 UI (ocupa 4 mL pó)', doseUnit: 'UI', doseValue: 10000000 }
+        ],
+        dilutionGuide: '5.000.000 UI: adicionar 8 mL de AD (volume final = 10 mL). Diluir fração aspirada em 100 mL de SF 0,9%.'
+      },
+      {
+        id: 'furosemida',
+        name: 'Furosemida',
+        genericName: 'Furosemida',
+        commercialNames: ['Lasix', 'Furosemida'],
+        category: 'Cardiovasculares e Anti-hipertensivos',
+        summary: 'Diurético de alça de alta potência que promove rápida excreção de água e eletrólitos pelo rim.',
+        mechanism: 'Inibe o cotransportador Na+/K+/2Cl- na alça de Henle renal.',
+        indications: ['Edema agudo de pulmão', 'Insuficiência cardíaca descompensada', 'Edemas nefróticos e cirróticos', 'Crise hipertensiva com sobrecarga volêmica'],
+        contraindications: ['Anúria por insuficiência renal terminal', 'Hipovolemia e desidratação', 'Hipocalemia severa pré-existente'],
+        commonSideEffects: ['Diurese volumosa rápida', 'Hipotensão postural e tontura', 'Cãibras musculares por perda de K+'],
+        severeSideEffects: ['Hipocalemia grave desencadeando arritmias', 'Ototoxicidade se infusão rápida em altas doses', 'Choque hipovolêmico'],
+        routes: ['EV / IV', 'VO', 'IM'],
+        nursingPrecautions: [
+          'Balanço hídrico e controle rigoroso da diurese.',
+          'Velocidade máxima EV recomendada: 4 mg por minuto para prevenir zumbido e ototoxicidade.',
+          'Monitorar Pressão Arterial e eletrólitos (potássio sérico).',
+          'Facilitar acesso ao banheiro ou comadre imediatamente após a aplicação.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '10 mg/mL (2 mL = 20 mg)', doseUnit: 'mg', doseValue: 20, volumeValue: 2 },
+          { form: 'Comprimido', concentration: '40 mg', doseUnit: 'mg', doseValue: 40 }
+        ],
+        dilutionGuide: 'Bolus lento (1 ampola de 20 mg em 2 a 5 minutos) pura ou em infusão contínua em SF 0,9%.'
+      },
+      {
+        id: 'amiodarona',
+        name: 'Cloridrato de Amiodarona',
+        genericName: 'Amiodarona',
+        commercialNames: ['Ancoron', 'Atlansil'],
+        category: 'Cardiovasculares e Anti-hipertensivos',
+        summary: 'Antiarrítmico de classe III indicado na reversão e profilaxia de arritmias ventriculares e supraventriculares graves.',
+        mechanism: 'Bloqueia canais de potássio, prolongando a duração do potencial de ação cardíaco e o período refratário.',
+        indications: ['Fibrilação Ventricular (FV) e TV sem pulso na PCR', 'Taquicardia Ventricular instável', 'Fibrilação Atrial com alta resposta'],
+        contraindications: ['Bradicardia sinusal severa (< 50 bpm) e BAV avançado', 'Choque cardiogênico', 'Disfunção tireoidiana manifesta'],
+        commonSideEffects: ['Bradicardia e QT longo no ECG', 'Hipotensão na infusão venosa', 'Flebite em veias finas periféricas'],
+        severeSideEffects: ['Torsades de Pointes', 'Fibrose pulmonar', 'Disfunção tireoidiana', 'Hepatotoxicidade'],
+        routes: ['EV / IV', 'VO'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'Na PCR: 1ª dose de 300 mg (2 ampolas) em bolus após o 3º choque; 2ª dose de 150 mg.',
+          'DILUENTE EXCLUSIVO: Diluir APENAS em Soro Glicosado 5% (SG 5%). Incompatível com SF 0,9%!',
+          'Preferir Acesso Venoso Central (CVC) devido ao alto potencial irritante vascular.',
+          'Monitorização eletrocardiográfica contínua.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '50 mg/mL (3 mL = 150 mg)', doseUnit: 'mg', doseValue: 150, volumeValue: 3 },
+          { form: 'Comprimido', concentration: '200 mg', doseUnit: 'mg', doseValue: 200 }
+        ],
+        dilutionGuide: 'Na PCR: diluir em 20 mL de SG 5%. Na manutenção: diluir em frasco de SG 5% em bomba de infusão.',
+        highAlert: true
+      },
+      {
+        id: 'noradrenalina',
+        name: 'Hemitartarato de Norepinefrina',
+        genericName: 'Norepinefrina (Noradrenalina)',
+        commercialNames: ['Levophed', 'Norepina'],
+        category: 'Cardiovasculares e Anti-hipertensivos',
+        summary: 'Vasopressor de primeira linha no choque séptico, distributivo e vasodilatador.',
+        mechanism: 'Potente agonista alfa-1 adrenérgico (vasoconstrição intensa) com discreta ação beta-1 inotrópica.',
+        indications: ['Choque séptico refratário a volume', 'Choque neurogênico ou anafilático', 'Hipotensão refratária com risco de colapso'],
+        contraindications: ['Sem contraindicação absoluta no choque com risco iminente de morte.'],
+        commonSideEffects: ['Extremidades frias e palidez', 'Taquicardia ou bradicardia reflexa', 'Ansiedade e cefaleia'],
+        severeSideEffects: ['Necrose isquêmica de extremidades em doses altas', 'Necrose tecidual grave por extravasamento periférico', 'Arritmias ventriculares'],
+        routes: ['EV / IV'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA MÁXIMA (MAV).',
+          'INFUSÃO OBRIGATÓRIA EM BOMBA DE INFUSÃO CONTÍNUA (BIC).',
+          'Preferir exclusivamente ACESSO VENOSO CENTRAL (CVC).',
+          'Se houver extravasamento: parar imediatamente e comunicar médico (antídoto: fentolamina local).',
+          'Monitorar Pressão Arterial Média (PAM) a cada 15 minutos até estabilizar (meta habitual PAM ≥ 65 mmHg).'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '2 mg/mL tartarato = 1 mg/mL base (4 mL = 4 mg base)', doseUnit: 'mg', doseValue: 4, volumeValue: 4 }
+        ],
+        dilutionGuide: 'Solução padrão: 4 ampolas (16 mg base / 16 mL) + 234 mL de SG 5% (total 250 mL). Correr em BIC.',
+        highAlert: true
+      },
+      {
+        id: 'heparina-sodica',
+        name: 'Heparina Sódica Não Fracionada',
+        genericName: 'Heparina Sódica',
+        commercialNames: ['Liquemine', 'Hemofol'],
+        category: 'Anticoagulantes e Trombolíticos',
+        summary: 'Anticoagulante parenteral clássico utilizado na prevenção e tratamento de trombose venosa profunda e embolia pulmonar.',
+        mechanism: 'Potencializa a ação da antitrombina III, inibindo trombina (Fator IIa) e Fator Xa.',
+        indications: ['Tromboembolismo venoso (TVP e TEP)', 'Síndrome coronariana aguda (IAM)', 'Anticoagulação em hemodiálise'],
+        contraindications: ['Sangramento ativo grave ou úlcera péptica hemorrágica', 'Histórico de Trombocitopenia Induzida por Heparina (TIH)', 'Pós-op recente neurológico ou ocular'],
+        commonSideEffects: ['Hematomas no local da injeção', 'Sangramento gengival ou epistaxe'],
+        severeSideEffects: ['Hemorragia grave (cerebral ou digestiva)', 'Trombocitopenia Induzida por Heparina (TIH) com risco trombótico'],
+        routes: ['EV / IV', 'SC'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'Controle de TTPa (Tempo de Tromboplastina Parcial ativado).',
+          'NUNCA APLICAR POR VIA INTRAMUSCULAR (IM) pelo risco de hematomas e necrose muscular.',
+          'Aplicação SC: no abdome (2 dedos afastado do umbigo), sem massagear após a punção.',
+          'Antídoto específico em sangramento: SULFATO DE PROTAMINA.'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola EV', concentration: '5.000 UI/mL (5 mL = 25.000 UI)', doseUnit: 'UI', doseValue: 25000, volumeValue: 5 },
+          { form: 'Ampola SC', concentration: '5.000 UI / 0,25 mL', doseUnit: 'UI', doseValue: 5000, volumeValue: 0.25 }
+        ],
+        dilutionGuide: 'Infusão contínua: 25.000 UI (5 mL) em 245 mL de SF 0,9% ou SG 5% (100 UI/mL) em BIC.',
+        highAlert: true
+      },
+      {
+        id: 'enoxaparina',
+        name: 'Enoxaparina Sódica',
+        genericName: 'Enoxaparina',
+        commercialNames: ['Clexane', 'Versa', 'Enoxalow'],
+        category: 'Anticoagulantes e Trombolíticos',
+        summary: 'Heparina de baixo peso molecular com resposta anticoagulante previsível dispensando monitoramento rotineiro de TTPa.',
+        mechanism: 'Inibe predominantemente o Fator Xa ativado.',
+        indications: ['Profilaxia de TEV em cirurgias e pacientes acamados', 'Tratamento de TVP e TEP', 'Angina instável e IAM'],
+        contraindications: ['Hemorragia ativa grave', 'TIH nos últimos 100 dias', 'Anestesia epidural recente (risco de hematoma espinhal)'],
+        commonSideEffects: ['Equimose e hematoma local no subcutâneo', 'Pequenos sangramentos'],
+        severeSideEffects: ['Hemorragia maior', 'Hematoma epidural com paraplegia pós-punção lombar'],
+        routes: ['SC', 'EV / IV'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'Seringa preenchida pronta: NÃO EXPULSAR A BOLHA DE AR existente antes de aplicar (ela serve para selar o medicamento no subcutâneo).',
+          'Aplicar no tecido subcutâneo anterolateral do abdome com agulha a 90° e prega cutânea.',
+          'Nunca esfregar ou massagear a área após a injeção.'
+        ],
+        presentations: [
+          { form: 'Seringa preenchida', concentration: '40 mg / 0,4 mL', doseUnit: 'mg', doseValue: 40, volumeValue: 0.4 },
+          { form: 'Seringa preenchida', concentration: '60 mg / 0,6 mL', doseUnit: 'mg', doseValue: 60, volumeValue: 0.6 }
+        ],
+        highAlert: true
+      },
+      {
+        id: 'ondansetrona',
+        name: 'Cloridrato de Ondansetrona',
+        genericName: 'Ondansetrona',
+        commercialNames: ['Vonau Flash', 'Zofran'],
+        category: 'Gastrointestinais e Antieméticos',
+        summary: 'Antiemético antagonista 5-HT3 altamente eficaz contra náuseas e vômitos no pós-operatório e quimioterapia.',
+        mechanism: 'Bloqueia receptores de serotonina 5-HT3 na zona disparadora e no trato digestivo.',
+        indications: ['Náuseas e vômitos no pós-operatório (NVPO)', 'Náuseas por quimioterapia e radioterapia'],
+        contraindications: ['Uso concomitante com apomorfina', 'Síndrome congênita do QT longo'],
+        commonSideEffects: ['Cefaleia (muito comum)', 'Constipação intestinal', 'Rubor facial e sensação de calor'],
+        severeSideEffects: ['Prolongamento de intervalo QT', 'Síndrome serotoninérgica'],
+        routes: ['EV / IV', 'VO', 'IM', 'SL'],
+        nursingPrecautions: [
+          'Administração EV direta deve ser LENTA (mínimo de 2 a 5 minutos) para evitar dor de cabeça súbita.',
+          'Pode ser diluída em 50 a 100 mL de SF 0,9% para correr em 15 minutos.',
+          'Comprimido orodispersível (Vonau Flash): colocar sobre a língua sem mastigar.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '2 mg/mL (2 mL = 4 mg)', doseUnit: 'mg', doseValue: 4, volumeValue: 2 },
+          { form: 'Ampola', concentration: '2 mg/mL (4 mL = 8 mg)', doseUnit: 'mg', doseValue: 8, volumeValue: 4 },
+          { form: 'Comprimido orodispersível', concentration: '4 mg', doseUnit: 'mg', doseValue: 4 }
+        ],
+        dilutionGuide: 'Bolus lento (> 2 a 5 min) ou diluída em 50 mL de SF 0,9% em 15 minutos.'
+      },
+      {
+        id: 'metoclopramida',
+        name: 'Cloridrato de Metoclopramida',
+        genericName: 'Metoclopramida',
+        commercialNames: ['Plasil', 'Noprosil'],
+        category: 'Gastrointestinais e Antieméticos',
+        summary: 'Procinético e antiemético clássico que estimula a motilidade do trato gastrointestinal superior.',
+        mechanism: 'Antagonista dos receptores dopaminérgicos D2 e estimulador colinérgico do esvaziamento gástrico.',
+        indications: ['Náuseas e vômitos de diversas origens', 'Gastroparesia diabética', 'Refluxo gastroesofágico'],
+        contraindications: ['Obstrução ou hemorragia digestiva', 'Feocromocitoma', 'Epilepsia'],
+        commonSideEffects: ['Sonolência e fadiga', 'Inquietação motora e acatisia', 'Diarreia'],
+        severeSideEffects: ['Reações extrapiramidais agudas (trismo, torcicolo espasmódico, crise oculógira)', 'Discinesia tardia'],
+        routes: ['EV / IV', 'VO', 'IM'],
+        nursingPrecautions: [
+          'NUNCA APLICAR EV RÁPIDO EM BOLUS: a infusão rápida provoca reações extrapiramidais agudas e pânico no paciente.',
+          'Infundir diluído em 50 a 100 mL de SF 0,9% em pelo menos 15 a 20 minutos.',
+          'Antídoto para distonia aguda extrapiramidal: Biperideno (Akineton) ou Prometazina EV.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '5 mg/mL (2 mL = 10 mg)', doseUnit: 'mg', doseValue: 10, volumeValue: 2 },
+          { form: 'Comprimido', concentration: '10 mg', doseUnit: 'mg', doseValue: 10 }
+        ],
+        dilutionGuide: 'Diluir a ampola (10 mg) em 50-100 mL de SF 0,9% e infundir em 15 a 20 minutos.'
+      },
+      {
+        id: 'insulina-regular',
+        name: 'Insulina Humana Regular (R)',
+        genericName: 'Insulina Regular',
+        commercialNames: ['Humulin R', 'Novolin R'],
+        category: 'Endócrinos e Antidiabéticos',
+        summary: 'Insulina de ação rápida e límpida, única que pode ser administrada por via intravenosa no tratamento de cetoacidose.',
+        mechanism: 'Captação tecidual de glicose e inibição da gliconeogênese hepática.',
+        indications: ['Cetoacidose Diabética (CAD) e Estado Hiperosmolar', 'Correção rápida de hiperglicemias hospitalares', 'Tratamento de hipercalemia (com Glicose 50%)'],
+        contraindications: ['Hipoglicemia instalada (glicemia < 70 mg/dL)'],
+        commonSideEffects: ['Sudorese fria, fome súbita e tremores', 'Lipotrofia nos sítios repetidos'],
+        severeSideEffects: ['Coma hipoglicêmico', 'Hipocalemia grave por translocação celular'],
+        routes: ['SC', 'EV / IV', 'IM'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'UTILIZAR EXCLUSIVAMENTE SERINGA PRÓPRIA DE INSULINA (100 UI = 1 mL).',
+          'Aspecto LÍMPIDO e transparente (diferente da NPH que é leitosa).',
+          'Glicemia capilar horária durante infusão contínua em BIC.'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola', concentration: '100 UI/mL (10 mL = 1000 UI)', doseUnit: 'UI', doseValue: 100, volumeValue: 1 }
+        ],
+        dilutionGuide: 'Solução UTI: 100 UI em 100 mL de SF 0,9% (1 UI/mL) em BIC.',
+        highAlert: true
+      },
+      {
+        id: 'insulina-nph',
+        name: 'Insulina Humana NPH',
+        genericName: 'Insulina NPH',
+        commercialNames: ['Humulin N', 'Novolin N'],
+        category: 'Endócrinos e Antidiabéticos',
+        summary: 'Insulina basal de ação intermediária com aspecto turvo/leitoso utilizada no controle glicêmico de base.',
+        mechanism: 'Complexada com protamina para retardar a absorção do depósito subcutâneo.',
+        indications: ['Controle basal do Diabetes Mellitus tipo 1 e tipo 2', 'Diabetes gestacional'],
+        contraindications: ['Hipoglicemia', 'ADMINISTRAÇÃO INTRAVENOSA É ABSOLUTAMENTE CONTRAINDICADA'],
+        commonSideEffects: ['Hipoglicemia (especialmente no pico: 4 a 10h)', 'Lipotrofia cutânea'],
+        severeSideEffects: ['Coma hipoglicêmico severo'],
+        routes: ['SC'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'NUNCA ADMINISTRAR POR VIA INTRAVENOSA (EV). Apenas subcutânea.',
+          'Aspecto TURVO / LEITOSO. Homogeneizar rolando suavemente o frasco entre as mãos 10 vezes. NUNCA CHUACOALHAR FORTE.',
+          'Se misturar com Regular: aspirar PRIMEIRO a Regular (límpida) e DEPOIS a NPH (turva).'
+        ],
+        presentations: [
+          { form: 'Frasco-ampola', concentration: '100 UI/mL (10 mL = 1000 UI)', doseUnit: 'UI', doseValue: 100, volumeValue: 1 }
+        ],
+        highAlert: true
+      },
+      {
+        id: 'cloreto-potassio-19',
+        name: 'Cloridrato de Potássio 19,1% (KCl)',
+        genericName: 'Cloreto de Potássio 19,1%',
+        commercialNames: ['KCl 19,1%', 'Cloreto de Potássio Injetável'],
+        category: 'Eletrólitos e Emergência',
+        summary: 'Eletrólito concentrado de extrema periculosidade empregado na correção parenteral de hipocalemias graves.',
+        mechanism: 'Cátion intracelular primordial responsável pela condução do impulso neuromuscular e repolarização cardíaca.',
+        indications: ['Correção de hipocalemia grave (K+ < 3,0 mEq/L)', 'Reposição hidroeletrolítica em NPT'],
+        contraindications: ['NUNCA ADMINISTRAR PURO OU EM BOLUS DIRETO NA VEIA (CAUSA PARADA CARDÍACA IRREVERSÍVEL EM ASSISTOLIA)', 'Hipercalemia pré-existente'],
+        commonSideEffects: ['Dor e queimação na veia durante a infusão', 'Flebite química'],
+        severeSideEffects: ['Assistolia e parada cardíaca fatal por infusão rápida', 'Necrose tecidual por extravasamento'],
+        routes: ['EV / IV'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA MÁXIMA (MAV - Rótulo Vermelho).',
+          'JAMAIS, SOB NENHUMA HIPÓTESE, APLICAR EM BOLUS DIRETO NA VEIA.',
+          'SEMPRE DILUIR MUITO BEM em frascos de SF 0,9% ou SG 5% e agitar o frasco.',
+          'Em veia periférica: máximo de 40 mEq/L (~8 mL de KCl 19,1% em 500 mL). Concentrações maiores exigem CVC.',
+          'Velocidade máxima segura: não exceder 10 a 20 mEq por hora.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '19,1% (1 mL ≈ 2,5 mEq de K+; 10 mL = 25 mEq)', doseUnit: 'mL', doseValue: 10, volumeValue: 10 }
+        ],
+        dilutionGuide: 'Diluir a ampola em no mínimo 500 mL de SF 0,9% ou SG 5% e infundir lentamente.',
+        highAlert: true
+      },
+      {
+        id: 'gluconato-calcio-10',
+        name: 'Gluconato de Cálcio 10%',
+        genericName: 'Gluconato de Cálcio',
+        commercialNames: ['Gluconato de Cálcio 10%'],
+        category: 'Eletrólitos e Emergência',
+        summary: 'Sal de cálcio parenteral de escolha para estabilização de membrana miocárdica na hipercalemia grave.',
+        mechanism: 'Aumenta o limiar do potencial de ação celular, antagonizando a toxicidade cardíaca do excesso de potássio.',
+        indications: ['Estabilização de membrana miocárdica na Hipercalemia grave com alterações no ECG', 'Hipocalcemia sintomática (tetania)', 'Intoxicação por sulfato de magnésio'],
+        contraindications: ['Hipercalcemia', 'Intoxicação digitálica (pode precipitar FV fatal)', 'Incompatibilidade com bicarbonato de sódio'],
+        commonSideEffects: ['Sensação de calor e rubor difuso', 'Gosto metálico na boca'],
+        severeSideEffects: ['Bradicardia extrema e parada cardíaca se infusão rápida em bolus', 'Necrose tecidual grave por extravasamento'],
+        routes: ['EV / IV'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'Infusão EV sempre lenta: diluir a ampola (10 mL) em 50 a 100 mL de SF 0,9% e infundir em 10 a 20 min com monitorização cardíaca.',
+          'NUNCA infundir na mesma via de bicarbonato de sódio ou ceftriaxona (precipitação imediata).'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '10% (10 mL contém 1 g)', doseUnit: 'g', doseValue: 1, volumeValue: 10 }
+        ],
+        dilutionGuide: 'Diluir 1 ampola (10 mL) em 50 a 100 mL de SF 0,9% e infundir em 15 a 30 minutos.',
+        highAlert: true
+      },
+      {
+        id: 'glicose-50',
+        name: 'Glicose Hipertônica 50%',
+        genericName: 'Glicose 50%',
+        commercialNames: ['Glicose 50% Injetável'],
+        category: 'Eletrólitos e Emergência',
+        summary: 'Solução parenteral densamente calórica e hiperosmolar fundamental no resgate de urgência do coma hipoglicêmico.',
+        mechanism: 'Eleva imediatamente a glicemia sérica restabelecendo substrato energético cerebral.',
+        indications: ['Hipoglicemia severa sintomática / coma hipoglicêmico', 'Solução polarizadora com Insulina na hipercalemia'],
+        contraindications: ['Hemorragia intracraniana aguda', 'Coma hiperosmolar hiperglicêmico'],
+        commonSideEffects: ['Calor local e queimação venosa', 'Hiperglicemia rebote'],
+        severeSideEffects: ['Tromboflebite química em veias finas', 'Necrose tecidual extensa se extravasamento perivenoso'],
+        routes: ['EV / IV'],
+        nursingPrecautions: [
+          'MEDICAMENTO DE ALTA VIGILÂNCIA (MAV).',
+          'Em desnutridos ou etilistas crônicos: administrar TIAMINA (Vit B1) antes ou junto para prevenir Encefalopatia de Wernicke.',
+          'Aplicar EV lento em veia calibrosa com teste prévio de refluxo de sangue.',
+          'Lavar a via com 10 a 20 mL de SF 0,9% após a injeção.'
+        ],
+        presentations: [
+          { form: 'Ampola', concentration: '50% (10 mL = 5 g de glicose pura)', doseUnit: 'g', doseValue: 5, volumeValue: 10 },
+          { form: 'Ampola', concentration: '50% (20 mL = 10 g de glicose pura)', doseUnit: 'g', doseValue: 10, volumeValue: 20 }
+        ],
+        dilutionGuide: 'Bolus de emergência: comumente 40 a 60 mL de Glicose 50% administrados lentamente.',
+        highAlert: true
+      }
+    ];
+
+    /* ========================================================
+       DATA: PRACTICE QUIZ QUESTIONS
+       ======================================================== */
+    const QUIZ_QUESTIONS = [
+      {
+        id: 'q1',
+        title: 'Cálculo de Ampola Parenteral (Dipirona)',
+        scenario: 'Paciente de 45 anos com febre de 38,9°C e dor intensa na clínica médica.',
+        prescription: 'Dipirona Sódica 750 mg EV agora.',
+        available: 'Ampolas de Dipirona 500 mg/mL com 2 mL (Total na ampola = 1000 mg).',
+        question: 'Quantos mL o técnico ou enfermeiro deverá aspirar da ampola para administrar a dose exata?',
+        correctAnswer: 1.5,
+        unit: 'mL',
+        tolerance: 0.05,
+        category: 'Dose e Volume',
+        stepByStep: [
+          '1. Ampola contém: 500 mg a cada 1 mL (ou 1000 mg em 2 mL).',
+          '2. Dose prescrita pelo médico: 750 mg.',
+          '3. Montagem da Regra de Três: 500 mg ── 1 mL  |  750 mg ── X mL',
+          '4. Multiplicação cruzada: 500 · X = 750 · 1  =>  X = 750 / 500 = 1,5 mL.',
+          '5. Conclusão: Aspirar 1,5 mL da ampola.'
+        ],
+        nursingTip: 'Como a ampola total tem 2 mL (1000 mg), 1,5 mL representa exatamente 3/4 da ampola. Infundir lentamente para prevenir hipotensão.'
+      },
+      {
+        id: 'q2',
+        title: 'Reconstituição de Frasco-Ampola (Ceftriaxona)',
+        scenario: 'Criança de 6 anos internada com pneumonia bacteriana comunitária.',
+        prescription: 'Ceftriaxona Sódica 400 mg EV de 12/12h.',
+        available: 'Frasco-ampola com 1 g (1000 mg) de pó liofilizado e ampolas de Água Destilada de 10 mL.',
+        question: 'Após reconstituir o frasco de 1 g com 10 mL de água destilada, quantos mL devem ser aspirados?',
+        correctAnswer: 4,
+        unit: 'mL',
+        tolerance: 0.1,
+        category: 'Dose e Volume',
+        stepByStep: [
+          '1. Converter unidades: 1 g = 1000 mg.',
+          '2. Reconstituição: 1000 mg estão dissolvidos em 10 mL.',
+          '3. Regra de três: 1000 mg ── 10 mL  |  400 mg ── X mL',
+          '4. Cruzamento: 1000 · X = 400 · 10 = 4000  =>  X = 4000 / 1000 = 4 mL.',
+          '5. Conclusão: Aspirar 4 mL da solução.'
+        ],
+        nursingTip: 'Aspirar 4 mL e diluir em 50 a 100 mL de SF 0,9% para correr em 30 a 60 minutos. Nunca usar soluções com cálcio como diluente.'
+      },
+      {
+        id: 'q3',
+        title: 'Gotejamento em Macrogotas (Tempo em Horas)',
+        scenario: 'Paciente desidratado necessita de reposição volêmica contínua.',
+        prescription: 'Soro Fisiológico 0,9% 1000 mL para correr em 8 horas.',
+        available: 'Equipo de Macrogotas convencional (1 mL = 20 gotas).',
+        question: 'Qual deve ser a velocidade em Gotas por Minuto (gts/min)? (Arredonde para o número inteiro mais próximo)',
+        correctAnswer: 42,
+        unit: 'gotas/min',
+        tolerance: 0.6,
+        category: 'Gotejamento',
+        stepByStep: [
+          '1. Fórmula de Macrogotas em HORAS: Gotas/min = Volume (mL) / (Tempo em h × 3)',
+          '2. Inserir valores: Gotas/min = 1000 / (8 × 3) = 1000 / 24',
+          '3. Cálculo: 1000 / 24 ≈ 41,66 gotas/min.',
+          '4. Arredondamento da enfermagem: Como o decimal é 0,66 (≥ 0,5), arredonda-se para 42 gotas/min.'
+        ],
+        nursingTip: 'Na enfermagem não é possível fracionar gotas físicas. Decimal ≥ 0,5 arredonda para cima; menor que 0,5 arredonda para baixo.'
+      },
+      {
+        id: 'q4',
+        title: 'Gotejamento em Minutos (Antibiótico Rápido)',
+        scenario: 'Prescrição de antibiótico intermitente em enfermaria cirúrgica.',
+        prescription: 'Metronidazol 500 mg (bolsa de 100 mL) para correr em 30 minutos.',
+        available: 'Equipo de Macrogotas padrão.',
+        question: 'Quantas gotas por minuto (macrogotas) devem ser programadas?',
+        correctAnswer: 67,
+        unit: 'gotas/min',
+        tolerance: 0.8,
+        category: 'Gotejamento',
+        stepByStep: [
+          '1. Tempo em MINUTOS: Fórmula: Gotas/min = (Volume em mL × 20) / Tempo em min',
+          '2. Inserir valores: Gotas/min = (100 × 20) / 30 = 2000 / 30',
+          '3. Cálculo: 2000 / 30 = 66,66...',
+          '4. Arredondamento: 66,66 arredonda-se para 67 gotas/min.'
+        ],
+        nursingTip: 'Mnemônica: Tempo em horas divide por (T × 3); Tempo em minutos multiplica o volume por 20 e divide pelo tempo em min.'
+      },
+      {
+        id: 'q5',
+        title: 'Cálculo de Microgotas por Minuto',
+        scenario: 'Paciente cardiopata em enfermaria com restrição hídrica rigorosa.',
+        prescription: 'Soro Glicosado 5% 240 mL para correr ao longo de 12 horas.',
+        available: 'Equipo de Microgotas (1 mL = 60 microgotas).',
+        question: 'Qual a velocidade em Microgotas por Minuto (microgts/min)?',
+        correctAnswer: 20,
+        unit: 'microgotas/min',
+        tolerance: 0.1,
+        category: 'Gotejamento',
+        stepByStep: [
+          '1. Fórmula de Microgotas em HORAS: Microgotas/min = Volume (mL) / Tempo (h)',
+          '2. Inserir valores: Microgotas/min = 240 / 12',
+          '3. Cálculo: 240 / 12 = 20 microgotas/min.',
+          '4. Regra prática: Na bomba de infusão, 20 microgotas/min equivale a exatamente 20 mL/hora!'
+        ],
+        nursingTip: 'Regra de ouro: Microgotas/minuto é numericamente idêntico à vazão em mL/h na bomba volumétrica contínua!'
+      },
+      {
+        id: 'q6',
+        title: 'Penicilina G Cristalina com Volume do Pó',
+        scenario: 'Paciente internado com neurossífilis necessita de antibioticoterapia específica.',
+        prescription: 'Penicilina G Cristalina 2.500.000 UI EV de 4/4h.',
+        available: 'Frasco de Penicilina Cristalina 5.000.000 UI e ampolas de água destilada.',
+        question: 'O pó de 5M UI ocupa 2 mL. Se adicionarmos 8 mL de água destilada (total 10 mL), quantos mL aspirar para administrar a dose?',
+        correctAnswer: 5,
+        unit: 'mL',
+        tolerance: 0.1,
+        category: 'Penicilina',
+        stepByStep: [
+          '1. Volume do pó de 5M = 2 mL.',
+          '2. Volume total = 8 mL de AD + 2 mL de pó = 10 mL no frasco.',
+          '3. Concentração: 5.000.000 UI em 10 mL (500.000 UI/mL).',
+          '4. Regra de três: 5.000.000 UI ── 10 mL  |  2.500.000 UI ── X mL',
+          '5. Cálculo: X = (2.500.000 × 10) / 5.000.000 = 5 mL.'
+        ],
+        nursingTip: 'Pegadinha clássica em provas: esquecer os 2 mL do pó gera erro na concentração e superdosagem do paciente!'
+      },
+      {
+        id: 'q7',
+        title: 'Conversão de Unidades e Divisão de Comprimidos',
+        scenario: 'Paciente idoso hipertenso na Unidade Básica de Saúde.',
+        prescription: 'Captopril 12,5 mg VO pela manhã.',
+        available: 'Comprimidos sulcados de Captopril 25 mg.',
+        question: 'Quantos comprimidos (ou fração) devem ser administrados?',
+        correctAnswer: 0.5,
+        unit: 'comprimido',
+        tolerance: 0.01,
+        category: 'Conversão',
+        stepByStep: [
+          '1. Dose prescrita: 12,5 mg. Dose disponível: 25 mg.',
+          '2. Razão: 12,5 mg / 25 mg = 0,5 comprimido (metade).',
+          '3. Como o comprimido possui sulco divisório central de fábrica, pode ser partido pela metade com segurança.'
+        ],
+        nursingTip: 'Apenas comprimidos sulcados podem ser partidos. Comprimidos revestidos ou cápsulas nunca devem ser fracionados.'
+      },
+      {
+        id: 'q8',
+        title: 'Transformação de Soro (SG 5% para SG 10%)',
+        scenario: 'Paciente com hipoglicemia de difícil controle necessita de aporte concentrado.',
+        prescription: 'Soro Glicosado a 10% de 500 mL.',
+        available: 'Frasco de SG 5% de 500 mL e ampolas de Glicose hipertônica a 50% de 20 mL.',
+        question: 'Quantos mL de Glicose 50% devemos acrescentar ao frasco de 500 mL de SG 5% para transformá-lo em SG 10%? (Desprezando a variação volêmica aproximada)',
+        correctAnswer: 50,
+        unit: 'mL',
+        tolerance: 1,
+        category: 'Solução/Concentração',
+        stepByStep: [
+          '1. SG 10% 500 mL necessita de: (10 × 500) / 100 = 50 g de glicose pura.',
+          '2. SG 5% 500 mL já possui: (5 × 500) / 100 = 25 g de glicose.',
+          '3. Falta acrescentar: 50 g - 25 g = 25 g de glicose.',
+          '4. Glicose 50% fornece 50 g em 100 mL. Para obter 25 g: (25 × 100) / 50 = 50 mL de Glicose a 50%!',
+          '5. Conclusão: Acrescentar 50 mL (2 ampolas e meia de 20 mL).'
+        ],
+        nursingTip: 'O enfermeiro aspira 50 mL de Glicose 50% e injeta no frasco de SG 5%, homogeneizando e identificando o rótulo com caneta indelével.'
+      }
+    ];
+
+    /* ========================================================
+       STATE MANAGEMENT
+       ======================================================== */
+    let currentMainTab = 'drugs';
+    let currentCalcTab = 'dose-volume';
+    let drugSearchQuery = '';
+    let selectedCategory = 'Todas';
+    let selectedRoute = 'Todas';
+    let filterHighAlert = false;
+    let filterBookmarks = false;
+    let bookmarkedIds = [];
+
+    // Quiz state
+    let quizFilterCategory = 'Todas';
+    let currentQuizIndex = 0;
+    let userQuizScores = {};
+    let isQuizSubmitted = false;
+    let showQuizExplanation = false;
+
+    // Drip simulator state
+    let dripAnimationRunning = true;
+    let dripIntervalTimer = null;
+    let dripTimeUnit = 'h';
+    let equipoType = 'macro';
+
+    // Penicillin state
+    let penVialType = '5M';
+
+    // Load bookmarks from localStorage
+    try {
+      const saved = localStorage.getItem('farmaenf_bookmarks');
+      bookmarkedIds = saved ? JSON.parse(saved) : ['dipirona', 'ceftriaxona', 'morfina'];
+    } catch (e) {
+      bookmarkedIds = ['dipirona', 'ceftriaxona', 'morfina'];
+    }
+
+    function saveBookmarks() {
+      try {
+        localStorage.setItem('farmaenf_bookmarks', JSON.stringify(bookmarkedIds));
+      } catch (e) {}
+      updateBookmarkCount();
+    }
+
+    function updateBookmarkCount() {
+      const el = document.getElementById('bookmark-count');
+      if (el) el.textContent = bookmarkedIds.length;
+    }
+
+    /* ========================================================
+       MAIN TAB NAVIGATION
+       ======================================================== */
+    function switchMainTab(tab) {
+      currentMainTab = tab;
+      const viewDrugs = document.getElementById('view-drugs');
+      const viewCalcs = document.getElementById('view-calculators');
+      const btnTabDrugs = document.getElementById('btn-tab-drugs');
+      const btnTabCalcs = document.getElementById('btn-tab-calculators');
+      const mobBtnDrugs = document.getElementById('mob-btn-drugs');
+      const mobBtnCalcs = document.getElementById('mob-btn-calculators');
+
+      if (tab === 'drugs') {
+        viewDrugs.classList.remove('hidden');
+        viewCalcs.classList.add('hidden');
+        btnTabDrugs.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-slate-900 shadow-xs';
+        btnTabCalcs.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-700 hover:text-slate-900';
+        mobBtnDrugs.className = 'flex flex-col items-center gap-1 text-xs font-semibold py-1 text-teal-700';
+        mobBtnCalcs.className = 'flex flex-col items-center gap-1 text-xs font-semibold py-1 text-slate-700 hover:text-slate-900';
+      } else {
+        viewDrugs.classList.add('hidden');
+        viewCalcs.classList.remove('hidden');
+        btnTabDrugs.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-700 hover:text-slate-900';
+        btnTabCalcs.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-slate-900 shadow-xs';
+        mobBtnDrugs.className = 'flex flex-col items-center gap-1 text-xs font-semibold py-1 text-slate-700 hover:text-slate-900';
+        mobBtnCalcs.className = 'flex flex-col items-center gap-1 text-xs font-semibold py-1 text-teal-700';
+      }
+      lucide.createIcons();
+    }
+
+    function switchCalcTab(subtab) {
+      currentCalcTab = subtab;
+      document.querySelectorAll('.calc-pane').forEach((p) => p.classList.add('hidden'));
+      document.querySelectorAll('.subtab-btn').forEach((b) => {
+        b.className = 'subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-700 hover:bg-slate-100';
+      });
+
+      const activePane = document.getElementById(`pane-${subtab}`);
+      const activeBtn = document.getElementById(`subtab-${subtab}`);
+      if (activePane) activePane.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = 'subtab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-teal-700 text-white shadow-xs';
+
+      if (subtab === 'gotas') {
+        calcDripRate();
+      } else if (subtab === 'dose-volume') {
+        calcDoseVolume();
+      } else if (subtab === 'regra-tres') {
+        calcRuleOfThree();
+      } else if (subtab === 'conversoes') {
+        calcConversions();
+      } else if (subtab === 'penicilina') {
+        calcPenicillin();
+      } else if (subtab === 'treino') {
+        renderQuiz();
+      }
+      lucide.createIcons();
+    }
+
+    /* ========================================================
+       DRUGS CATALOG & FILTERS
+       ======================================================== */
+    const CATEGORIES = [
+      'Todas',
+      'Analgésicos e Antitérmicos',
+      'Anti-inflamatórios (AINEs e Esteroides)',
+      'Antibióticos e Antimicrobianos',
+      'Cardiovasculares e Anti-hipertensivos',
+      'Anticoagulantes e Trombolíticos',
+      'Gastrointestinais e Antieméticos',
+      'Endócrinos e Antidiabéticos',
+      'Eletrólitos e Emergência'
+    ];
+
+    const ROUTES = ['Todas', 'EV / IV', 'VO', 'IM', 'SC'];
+
+    function initFilters() {
+      // Populate categories
+      const catCont = document.getElementById('categories-container');
+      catCont.innerHTML = CATEGORIES.map((cat) => `
+        <button
+          onclick="setDrugCategory('${cat}')"
+          class="cat-btn text-xs px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+            selectedCategory === cat ? 'bg-teal-700 text-white font-medium shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+          }"
+        >
+          ${cat}
+        </button>
+      `).join('');
+
+      // Populate routes
+      const routeCont = document.getElementById('routes-container');
+      routeCont.innerHTML = ROUTES.map((r) => `
+        <button
+          onclick="setDrugRoute('${r}')"
+          class="route-btn px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+            selectedRoute === r ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+          }"
+        >
+          ${r}
+        </button>
+      `).join('');
+
+      updateBookmarkCount();
+    }
+
+    function setDrugCategory(cat) {
+      selectedCategory = cat;
+      initFilters();
+      renderDrugsGrid();
+    }
+
+    function setDrugRoute(r) {
+      selectedRoute = r;
+      initFilters();
+      renderDrugsGrid();
+    }
+
+    function handleSearchInput(val) {
+      drugSearchQuery = val;
+      const clearBtn = document.getElementById('drug-search-clear');
+      if (clearBtn) {
+        if (val.trim()) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      renderDrugsGrid();
+    }
+
+    function clearSearchInput() {
+      document.getElementById('drug-search-input').value = '';
+      drugSearchQuery = '';
+      document.getElementById('drug-search-clear').classList.add('hidden');
+      renderDrugsGrid();
+    }
+
+    function toggleFilterHighAlert() {
+      filterHighAlert = !filterHighAlert;
+      const btn = document.getElementById('btn-filter-high-alert');
+      if (filterHighAlert) {
+        btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-300 bg-rose-50 text-rose-800 font-semibold';
+      } else {
+        btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50';
+      }
+      renderDrugsGrid();
+    }
+
+    function toggleFilterBookmarks() {
+      filterBookmarks = !filterBookmarks;
+      const btn = document.getElementById('btn-filter-bookmarks');
+      if (filterBookmarks) {
+        btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 font-semibold';
+      } else {
+        btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50';
+      }
+      renderDrugsGrid();
+    }
+
+    function clearAllFilters() {
+      clearSearchInput();
+      selectedCategory = 'Todas';
+      selectedRoute = 'Todas';
+      filterHighAlert = false;
+      filterBookmarks = false;
+      document.getElementById('btn-filter-high-alert').className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50';
+      document.getElementById('btn-filter-bookmarks').className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50';
+      initFilters();
+      renderDrugsGrid();
+    }
+
+    function toggleBookmark(drugId, event) {
+      if (event) event.stopPropagation();
+      if (bookmarkedIds.includes(drugId)) {
+        bookmarkedIds = bookmarkedIds.filter((id) => id !== drugId);
+      } else {
+        bookmarkedIds.push(drugId);
+      }
+      saveBookmarks();
+      renderDrugsGrid();
+      // If modal is open, re-render modal header
+      const modal = document.getElementById('drug-modal');
+      if (!modal.classList.contains('hidden') && currentModalDrugId === drugId) {
+        openDrugModal(drugId);
+      }
+    }
+
+    function renderDrugsGrid() {
+      const q = drugSearchQuery.toLowerCase().trim();
+      const hasFilter = q || selectedCategory !== 'Todas' || selectedRoute !== 'Todas' || filterHighAlert || filterBookmarks;
+      const clearBtn = document.getElementById('btn-clear-filters');
+      if (clearBtn) {
+        if (hasFilter) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+
+      const filtered = DRUGS.filter((d) => {
+        if (q) {
+          const matchName = d.name.toLowerCase().includes(q);
+          const matchGeneric = d.genericName.toLowerCase().includes(q);
+          const matchComm = d.commercialNames.some((c) => c.toLowerCase().includes(q));
+          const matchInd = d.indications.some((ind) => ind.toLowerCase().includes(q));
+          const matchCat = d.category.toLowerCase().includes(q);
+          if (!matchName && !matchGeneric && !matchComm && !matchInd && !matchCat) return false;
+        }
+        if (selectedCategory !== 'Todas' && d.category !== selectedCategory) return false;
+        if (selectedRoute !== 'Todas' && !d.routes.includes(selectedRoute)) return false;
+        if (filterHighAlert && !d.highAlert) return false;
+        if (filterBookmarks && !bookmarkedIds.includes(d.id)) return false;
+        return true;
+      });
+
+      const countText = document.getElementById('drugs-count-text');
+      if (countText) {
+        countText.innerHTML = `Exibindo <strong>${filtered.length}</strong> ${filtered.length === 1 ? 'medicamento' : 'medicamentos'}${selectedCategory !== 'Todas' ? ` em "${selectedCategory}"` : ''}`;
+      }
+
+      const grid = document.getElementById('drugs-grid');
+      if (!grid) return;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white rounded-xl p-12 text-center border border-slate-200 text-slate-400">
+            <i data-lucide="filter" class="w-10 h-10 mx-auto mb-2 opacity-30"></i>
+            <h4 class="text-sm font-semibold text-slate-700">Nenhum medicamento encontrado</h4>
+            <p class="text-xs text-slate-500 mt-1">Tente remover os filtros ou buscar por outro termo.</p>
+            <button onclick="clearAllFilters()" class="mt-3 text-xs bg-teal-50 text-teal-700 px-3 py-1.5 rounded-lg border border-teal-200 hover:bg-teal-100">
+              Limpar todos os filtros
+            </button>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = filtered.map((d) => {
+        const isBmk = bookmarkedIds.includes(d.id);
+        return `
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs hover:border-teal-300 hover:shadow-sm transition-all flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between gap-2 text-xs text-slate-400 mb-2">
+                <div class="flex items-center gap-1.5 truncate">
+                  <span class="truncate text-slate-500">${d.category}</span>
+                  <span aria-hidden="true">·</span>
+                  <span class="text-slate-600 font-medium">${d.routes.join('/')}</span>
+                </div>
+                <button onclick="toggleBookmark('${d.id}', event)" class="p-1 text-slate-400 hover:text-amber-500" title="${isBmk ? 'Remover dos favoritos' : 'Favoritar'}">
+                  <i data-lucide="bookmark" class="w-4 h-4 ${isBmk ? 'fill-amber-500 text-amber-500' : ''}"></i>
+                </button>
+              </div>
+
+              <div class="mb-2">
+                <div class="flex items-center gap-1.5">
+                  <h3 class="text-base font-bold text-slate-900 group-hover:text-teal-700 transition-colors">${d.name}</h3>
+                  ${d.highAlert ? `<span title="Medicamento de Alta Vigilância"><i data-lucide="shield-alert" class="w-4 h-4 text-rose-600 shrink-0"></i></span>` : ''}
+                </div>
+                <span class="text-xs text-slate-500 block truncate">Comercial: ${d.commercialNames.join(', ')}</span>
+              </div>
+
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-3">${d.summary}</p>
+
+              <div class="text-xs text-slate-500 mb-4 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                <span class="font-semibold text-slate-700 block mb-0.5">Indicações frequentes:</span>
+                <span class="text-slate-600 line-clamp-1">${d.indications.join(' · ')}</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <button onclick="openDrugModal('${d.id}')" class="flex-1 flex items-center justify-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100/70 py-2 rounded-lg transition-colors">
+                Ver Resumo Completo
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="sendDrugToCalc('${d.id}')" title="Calcular dose deste remédio" class="p-2 text-slate-500 hover:text-teal-700 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    /* ========================================================
+       MODAL DE DETALHES DO MEDICAMENTO
+       ======================================================== */
+    let currentModalDrugId = null;
+
+    function openDrugModal(drugId) {
+      currentModalDrugId = drugId;
+      const drug = DRUGS.find((d) => d.id === drugId);
+      if (!drug) return;
+
+      const modal = document.getElementById('drug-modal');
+      const content = document.getElementById('drug-modal-content');
+      const isBmk = bookmarkedIds.includes(drug.id);
+
+      content.innerHTML = `
+        <div class="p-5 sm:p-6 border-b border-slate-100 flex items-start justify-between gap-4 bg-slate-50/70">
+          <div>
+            <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
+              <span>${drug.category}</span>
+              <span aria-hidden="true">·</span>
+              <span>${drug.routes.join(', ')}</span>
+              ${drug.highAlert ? `<span aria-hidden="true">·</span><span class="text-rose-700 font-semibold flex items-center gap-1"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> MAV</span>` : ''}
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">${drug.name}</h2>
+            <div class="text-xs text-slate-600 mt-1">
+              <span class="font-semibold text-slate-700">Nomes Comerciais:</span> ${drug.commercialNames.join(', ')}
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="toggleBookmark('${drug.id}', event)" class="p-2 rounded-lg border transition-colors ${isBmk ? 'bg-amber-50 text-amber-600 border-amber-300' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50'}">
+              <i data-lucide="bookmark" class="w-4 h-4 ${isBmk ? 'fill-amber-500' : ''}"></i>
+            </button>
+            <button onclick="closeDrugModal()" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-6 text-sm text-slate-700">
+          <div class="space-y-3">
+            <p class="text-slate-800 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+              ${drug.summary}
+            </p>
+            <div class="text-xs text-slate-600">
+              <strong class="text-slate-800">Mecanismo de Ação:</strong> ${drug.mechanism}
+            </div>
+          </div>
+
+          ${drug.dilutionGuide ? `
+            <div class="p-4 bg-teal-50/70 border border-teal-200 rounded-xl space-y-1.5">
+              <div class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-teal-900">
+                <i data-lucide="sparkles" class="w-4 h-4 text-teal-600"></i>
+                Guia de Diluição e Infusão
+              </div>
+              <p class="text-xs text-teal-950 font-medium">${drug.dilutionGuide}</p>
+            </div>
+          ` : ''}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+                Principais Indicações Clínicas
+              </span>
+              <ul class="space-y-1.5 text-xs text-slate-700">
+                ${drug.indications.map((ind) => `<li class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold">•</span><span>${ind}</span></li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
+                <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i>
+                Contraindicações e Alertas
+              </span>
+              <ul class="space-y-1.5 text-xs text-slate-700">
+                ${drug.contraindications.map((ci) => `<li class="flex items-start gap-1.5"><span class="text-rose-500 font-bold">•</span><span>${ci}</span></li>`).join('')}
+              </ul>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-700 block">Efeitos Colaterais</span>
+            <div>
+              <span class="text-xs font-semibold text-slate-600 block mb-1">Efeitos Comuns:</span>
+              <div class="flex flex-wrap gap-1.5 text-xs text-slate-700">
+                ${drug.commonSideEffects.map((eff) => `<span class="bg-white border border-slate-200 px-2.5 py-1 rounded-md">${eff}</span>`).join('')}
+              </div>
+            </div>
+            ${drug.severeSideEffects && drug.severeSideEffects.length > 0 ? `
+              <div>
+                <span class="text-xs font-semibold text-rose-700 block mb-1">Efeitos Adversos Graves:</span>
+                <div class="flex flex-wrap gap-1.5 text-xs text-rose-900">
+                  ${drug.severeSideEffects.map((eff) => `<span class="bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-md font-medium">${eff}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="p-4 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-900 flex items-center gap-1.5">
+              <i data-lucide="heart-pulse" class="w-4 h-4 text-blue-600"></i>
+              Cuidados Fundamentais de Enfermagem
+            </span>
+            <ul class="space-y-2 text-xs text-blue-950">
+              ${drug.nursingPrecautions.map((care) => `<li class="flex items-start gap-2"><span class="text-blue-500 font-bold shrink-0 mt-0.5">•</span><span class="leading-relaxed">${care}</span></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="space-y-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-700 block">Apresentações Hospitalares:</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              ${drug.presentations.map((p) => `
+                <div class="p-3 bg-white border border-slate-200 rounded-lg flex items-center justify-between">
+                  <div>
+                    <span class="font-semibold text-slate-900">${p.form}</span>
+                    <span class="text-slate-500 block font-mono-numbers">${p.concentration}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 sm:p-5 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-xs text-slate-500 text-center sm:text-left">
+            Pratique o cálculo de aspiração com a apresentação deste medicamento.
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="sendDrugToCalc('${drug.id}')" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg transition-colors shadow-xs">
+              <i data-lucide="calculator" class="w-4 h-4"></i>
+              Calcular Dose na Calculadora
+            </button>
+            <button onclick="closeDrugModal()" class="px-4 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg border border-slate-200 hover:bg-white">
+              Fechar
+            </button>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeDrugModal() {
+      document.getElementById('drug-modal').classList.add('hidden');
+      currentModalDrugId = null;
+    }
+
+    function sendDrugToCalc(drugId) {
+      closeDrugModal();
+      const drug = DRUGS.find((d) => d.id === drugId);
+      if (!drug) return;
+
+      switchMainTab('calculators');
+      switchCalcTab('dose-volume');
+
+      // Pre-fill dose & volume if it has an injectable presentation
+      const inj = drug.presentations.find((p) => p.volumeValue && p.volumeValue > 0) || drug.presentations[0];
+      if (inj) {
+        document.getElementById('dv-avail-dose').value = inj.doseValue;
+        document.getElementById('dv-avail-unit').value = inj.doseUnit === '%' ? 'mg' : inj.doseUnit;
+        document.getElementById('dv-avail-vol').value = inj.volumeValue || 1;
+        document.getElementById('dv-presc-dose').value = inj.doseValue * 0.75;
+        document.getElementById('dv-presc-unit').value = inj.doseUnit === '%' ? 'mg' : inj.doseUnit;
+        calcDoseVolume();
+      }
+    }
+
+    /* ========================================================
+       CALCULATOR 1: DOSE & VOLUME
+       ======================================================== */
+    function applyDosePreset(pDose, pUnit, aDose, aUnit, aVol) {
+      document.getElementById('dv-presc-dose').value = pDose;
+      document.getElementById('dv-presc-unit').value = pUnit;
+      document.getElementById('dv-avail-dose').value = aDose;
+      document.getElementById('dv-avail-unit').value = aUnit;
+      document.getElementById('dv-avail-vol').value = aVol;
+      calcDoseVolume();
+    }
+
+    function resetDoseVolume() {
+      document.getElementById('dv-presc-dose').value = '';
+      document.getElementById('dv-avail-dose').value = '';
+      document.getElementById('dv-avail-vol').value = '';
+      calcDoseVolume();
+    }
+
+    function calcDoseVolume() {
+      const pDose = parseFloat(document.getElementById('dv-presc-dose').value) || 0;
+      const pUnit = document.getElementById('dv-presc-unit').value;
+      const aDose = parseFloat(document.getElementById('dv-avail-dose').value) || 0;
+      const aUnit = document.getElementById('dv-avail-unit').value;
+      const aVol = parseFloat(document.getElementById('dv-avail-vol').value) || 0;
+
+      const card = document.getElementById('dv-result-card');
+      if (!card) return;
+
+      // Unit compatibility
+      const isCompat = !((pUnit === 'UI' && aUnit !== 'UI') || (aUnit === 'UI' && pUnit !== 'UI'));
+
+      if (!isCompat) {
+        card.innerHTML = `
+          <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 text-sm">
+            Atenção: Não é possível calcular diretamente entre unidades incompatíveis (ex: UI e mg) sem uma especificação oficial do fabricante.
+          </div>
+        `;
+        return;
+      }
+
+      function getMultiplier(u) {
+        if (u === 'g') return 1000;
+        if (u === 'mg') return 1;
+        if (u === 'mcg') return 0.001;
+        return 1;
+      }
+
+      let pNorm = pDose;
+      let aNorm = aDose;
+      let unitText = '';
+
+      if (pUnit !== aUnit && pUnit !== 'UI') {
+        pNorm = pDose * getMultiplier(pUnit);
+        aNorm = aDose * getMultiplier(aUnit);
+        unitText = `Padronizando para a mesma unidade (mg): Prescrito = ${pNorm} mg; Disponível = ${aNorm} mg`;
+      }
+
+      const resVol = (aNorm > 0 && aVol > 0) ? (pNorm * aVol) / aNorm : null;
+
+      if (resVol !== null && resVol > 0) {
+        const formattedRes = Number.isInteger(resVol) ? resVol : resVol.toFixed(2).replace(/\.?0+$/, '');
+        const syringeText = resVol <= 1
+          ? 'Utilize seringa de 1 mL (tuberculina/insulina) para máxima precisão nos décimos de mL.'
+          : resVol <= 3
+          ? 'Utilize seringa de 3 mL para aspiração segura.'
+          : resVol <= 5
+          ? 'Utilize seringa de 5 mL com graduação nítida.'
+          : 'Utilize seringa de 10 mL ou 20 mL conforme o volume prescrito.';
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Resolução Didática Passo a Passo</span>
+              <span class="text-xs text-teal-700 font-medium flex items-center gap-1">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                Proporção Cruzada
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-200 rounded-xl p-4">
+                <span class="text-xs font-medium text-teal-800 uppercase tracking-wide block">Resultado Final a Aspirar:</span>
+                <div class="mt-1 flex items-baseline gap-2">
+                  <span class="text-3xl font-bold text-teal-950 font-mono-numbers">${formattedRes}</span>
+                  <span class="text-lg font-semibold text-teal-800">mL</span>
+                  <span class="text-xs text-slate-500 ml-2">(da apresentação disponível)</span>
+                </div>
+              </div>
+
+              ${unitText ? `
+                <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700 font-mono-numbers">
+                  <strong>Passo 1: Padronização das Unidades</strong>
+                  <p class="mt-1 text-slate-600">${unitText}</p>
+                </div>
+              ` : ''}
+
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-3">Estrutura da Regra de Três:</span>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                  <div class="p-3 bg-white rounded-lg border border-blue-200">
+                    <span class="text-xs text-slate-400 block mb-0.5">Disponível no Frasco</span>
+                    <span class="text-base font-bold text-blue-900 font-mono-numbers">${aNorm} ${pUnit === 'UI' ? 'UI' : 'mg'}</span>
+                  </div>
+                  <div class="p-3 bg-white rounded-lg border border-blue-200">
+                    <span class="text-xs text-slate-400 block mb-0.5">Volume Total</span>
+                    <span class="text-base font-bold text-blue-900 font-mono-numbers">${aVol} mL</span>
+                  </div>
+                  <div class="p-3 bg-white rounded-lg border border-teal-200">
+                    <span class="text-xs text-slate-400 block mb-0.5">Dose Prescrita</span>
+                    <span class="text-base font-bold text-teal-900 font-mono-numbers">${pNorm} ${pUnit === 'UI' ? 'UI' : 'mg'}</span>
+                  </div>
+                  <div class="p-3 bg-teal-500 text-white rounded-lg shadow-xs">
+                    <span class="text-xs text-teal-100 block mb-0.5">Volume a Aspirar (X)</span>
+                    <span class="text-base font-bold font-mono-numbers">X mL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2 text-xs text-slate-700 bg-white p-4 rounded-xl border border-slate-200 font-mono-numbers">
+                <span class="font-semibold text-slate-900 font-sans block mb-1">Desenvolvimento Algébrico:</span>
+                <p>1. ${aNorm} · X = ${pNorm} · ${aVol}</p>
+                <p>2. ${aNorm} · X = ${(pNorm * aVol).toFixed(2).replace(/\.?0+$/, '')}</p>
+                <p>3. X = ${(pNorm * aVol).toFixed(2).replace(/\.?0+$/, '')} / ${aNorm}</p>
+                <p class="font-bold text-teal-700 text-sm pt-1 border-t border-slate-100 font-sans">
+                  → X = ${formattedRes} mL
+                </p>
+              </div>
+
+              <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-600">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                <div>
+                  <strong class="text-slate-800">Recomendação de Seringa: </strong>
+                  <span>${syringeText}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-100 text-xs text-slate-500">
+            <span class="font-semibold text-slate-700">Dica de Segurança da Enfermagem:</span> Nunca aspire o medicamento sem confirmar a etiqueta e a validade. Realize checagem dupla em medicamentos de alta vigilância.
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <i data-lucide="calculator" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
+            <p class="text-sm">Preencha os valores da prescrição e do frasco para visualizar a resolução passo a passo.</p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    /* ========================================================
+       CALCULATOR 2: GOTAS E MICROGOTAS
+       ======================================================== */
+    function setDripTimeUnit(unit) {
+      dripTimeUnit = unit;
+      const btnH = document.getElementById('btn-time-h');
+      const btnMin = document.getElementById('btn-time-min');
+      if (unit === 'h') {
+        btnH.className = 'px-3 py-1 text-xs font-medium rounded-md bg-white text-slate-900 shadow-xs';
+        btnMin.className = 'px-3 py-1 text-xs font-medium rounded-md text-slate-600 hover:text-slate-900';
+      } else {
+        btnH.className = 'px-3 py-1 text-xs font-medium rounded-md text-slate-600 hover:text-slate-900';
+        btnMin.className = 'px-3 py-1 text-xs font-medium rounded-md bg-white text-slate-900 shadow-xs';
+      }
+      calcDripRate();
+    }
+
+    function setEquipoType(type) {
+      equipoType = type;
+      const btnMacro = document.getElementById('btn-equipo-macro');
+      const btnMicro = document.getElementById('btn-equipo-micro');
+      if (type === 'macro') {
+        btnMacro.className = 'p-3 rounded-lg border text-left bg-sky-50/80 border-sky-400 ring-2 ring-sky-300/40';
+        btnMicro.className = 'p-3 rounded-lg border text-left bg-white border-slate-200 hover:bg-slate-50';
+      } else {
+        btnMacro.className = 'p-3 rounded-lg border text-left bg-white border-slate-200 hover:bg-slate-50';
+        btnMicro.className = 'p-3 rounded-lg border text-left bg-sky-50/80 border-sky-400 ring-2 ring-sky-300/40';
+      }
+      calcDripRate();
+    }
+
+    function applyDripPreset(v, t, u) {
+      document.getElementById('drip-volume').value = v;
+      document.getElementById('drip-time').value = t;
+      setDripTimeUnit(u);
+    }
+
+    function resetDripRate() {
+      document.getElementById('drip-volume').value = '';
+      document.getElementById('drip-time').value = '';
+      calcDripRate();
+    }
+
+    function toggleDripAnimation() {
+      dripAnimationRunning = !dripAnimationRunning;
+      document.getElementById('btn-drip-toggle').textContent = dripAnimationRunning ? 'Pausar' : 'Iniciar';
+      if (!dripAnimationRunning && dripIntervalTimer) {
+        clearInterval(dripIntervalTimer);
+        dripIntervalTimer = null;
+      } else {
+        triggerDripTimer();
+      }
+    }
+
+    let currentDripRate = 42;
+
+    function triggerDripTimer() {
+      if (dripIntervalTimer) clearInterval(dripIntervalTimer);
+      if (!dripAnimationRunning || currentDripRate <= 0) return;
+
+      const ms = Math.max(180, Math.min(3500, 60000 / currentDripRate));
+      const droplet = document.getElementById('visual-droplet');
+      const intervalText = document.getElementById('drip-interval-text');
+
+      if (intervalText) {
+        intervalText.textContent = `1 gota a cada ${(ms / 1000).toFixed(2)} segundos.`;
+      }
+
+      dripIntervalTimer = setInterval(() => {
+        if (!droplet) return;
+        droplet.classList.remove('drip-animate');
+        void droplet.offsetWidth; // trigger reflow
+        droplet.classList.add('drip-animate');
+      }, ms);
+    }
+
+    function calcDripRate() {
+      const vol = parseFloat(document.getElementById('drip-volume').value) || 0;
+      const t = parseFloat(document.getElementById('drip-time').value) || 0;
+      const card = document.getElementById('drip-result-card');
+      if (!card) return;
+
+      let macroExact = 0;
+      let microExact = 0;
+      let formulaMacro = '';
+      let formulaMicro = '';
+      let substMacro = '';
+      let substMicro = '';
+
+      if (vol > 0 && t > 0) {
+        if (dripTimeUnit === 'h') {
+          macroExact = vol / (t * 3);
+          microExact = vol / t;
+          formulaMacro = 'Gotas/min = Volume (mL) / (Tempo em h × 3)';
+          formulaMicro = 'Microgotas/min = Volume (mL) / Tempo em h';
+          substMacro = `${vol} / (${t} × 3) = ${vol} / ${t * 3}`;
+          substMicro = `${vol} / ${t}`;
+        } else {
+          macroExact = (vol * 20) / t;
+          microExact = (vol * 60) / t;
+          formulaMacro = 'Gotas/min = (Volume em mL × 20) / Tempo em min';
+          formulaMicro = 'Microgotas/min = (Volume em mL × 60) / Tempo em min';
+          substMacro = `(${vol} × 20) / ${t} = ${vol * 20} / ${t}`;
+          substMicro = `(${vol} × 60) / ${t} = ${vol * 60} / ${t}`;
+        }
+      }
+
+      const macroRounded = Math.round(macroExact);
+      const microRounded = Math.round(microExact);
+      const activeRate = equipoType === 'macro' ? macroRounded : microRounded;
+      const activeExact = equipoType === 'macro' ? macroExact : microExact;
+
+      currentDripRate = activeRate > 0 ? activeRate : 42;
+      triggerDripTimer();
+
+      if (vol > 0 && t > 0) {
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Resultado e Passo a Passo Detalhado</span>
+              <span class="text-xs text-sky-700 font-medium">${dripTimeUnit === 'h' ? 'Tempo em Horas' : 'Tempo em Minutos'}</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="bg-gradient-to-r from-sky-500/10 to-blue-500/10 border border-sky-200 rounded-xl p-5">
+                <span class="text-xs font-semibold text-sky-800 uppercase tracking-wide block">
+                  Velocidade Recomendada (${equipoType === 'macro' ? 'Macrogotas' : 'Microgotas'}):
+                </span>
+                <div class="mt-2 flex items-baseline gap-3">
+                  <span class="text-4xl font-bold text-sky-950 font-mono-numbers">${activeRate}</span>
+                  <span class="text-lg font-semibold text-sky-800">${equipoType === 'macro' ? 'gotas / minuto' : 'microgotas / minuto'}</span>
+                </div>
+                <span class="text-xs text-slate-500 block mt-1">
+                  Valor exato sem arredondamento: <strong>${activeExact.toFixed(2)}</strong> ${equipoType === 'macro' ? 'gotas/min' : 'microgts/min'}
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="p-3.5 rounded-lg border ${equipoType === 'macro' ? 'bg-sky-50 border-sky-300' : 'bg-slate-50 border-slate-200'}">
+                  <span class="text-xs text-slate-500 block">Em Macrogotas:</span>
+                  <span class="text-xl font-bold text-slate-900 font-mono-numbers block mt-0.5">
+                    ${macroRounded} <span class="text-xs font-medium text-slate-500">gts/min</span>
+                  </span>
+                  <span class="text-xs text-slate-400">(${macroExact.toFixed(2)})</span>
+                </div>
+                <div class="p-3.5 rounded-lg border ${equipoType === 'micro' ? 'bg-sky-50 border-sky-300' : 'bg-slate-50 border-slate-200'}">
+                  <span class="text-xs text-slate-500 block">Em Microgotas:</span>
+                  <span class="text-xl font-bold text-slate-900 font-mono-numbers block mt-0.5">
+                    ${microRounded} <span class="text-xs font-medium text-slate-500">microgts/min</span>
+                  </span>
+                  <span class="text-xs text-slate-400">(${microExact.toFixed(2)})</span>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-3 font-mono-numbers text-xs">
+                <span class="font-semibold text-slate-800 font-sans block mb-1">Demonstração das Fórmulas:</span>
+                <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-1">
+                  <span class="font-sans font-semibold text-sky-800 block text-xs">1. Macrogotas (Gotas/min):</span>
+                  <p class="text-slate-600">${formulaMacro}</p>
+                  <p class="text-slate-800">Gotas/min = ${substMacro}</p>
+                  <p class="font-bold text-sky-900">Gotas/min = ${macroExact.toFixed(2)} → ${macroRounded} gotas/min</p>
+                </div>
+                <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-1">
+                  <span class="font-sans font-semibold text-blue-800 block text-xs">2. Microgotas (Microgotas/min):</span>
+                  <p class="text-slate-600">${formulaMicro}</p>
+                  <p class="text-slate-800">Microgotas/min = ${substMicro}</p>
+                  <p class="font-bold text-blue-900">Microgotas/min = ${microExact.toFixed(2)} → ${microRounded} microgotas/min</p>
+                </div>
+              </div>
+
+              <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-lg text-xs text-amber-900">
+                <span class="font-semibold">Critério de Arredondamento do COFEN:</span> Frações decimais ≥ 0,5 arredondam para cima (${activeExact.toFixed(2)} → ${activeRate}).
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-100 text-xs text-slate-500">
+            <span class="font-semibold text-slate-700">Dica Prática:</span> 1 gota equivale a 3 microgotas. Na bomba de infusão, mL/h é idêntico a microgotas/minuto.
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <i data-lucide="clock" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
+            <p class="text-sm">Informe o volume em mL e o tempo de infusão para ver o gotejamento e a resolução explicada.</p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    /* ========================================================
+       CALCULATOR 3: REGRA DE TRÊS
+       ======================================================== */
+    function resetRuleOfThree() {
+      document.getElementById('r3-a').value = '';
+      document.getElementById('r3-b').value = '';
+      document.getElementById('r3-c').value = '';
+      calcRuleOfThree();
+    }
+
+    function calcRuleOfThree() {
+      const a = parseFloat(document.getElementById('r3-a').value) || 0;
+      const ua = document.getElementById('r3-ua').value || 'mg';
+      const b = parseFloat(document.getElementById('r3-b').value) || 0;
+      const ub = document.getElementById('r3-ub').value || 'mL';
+      const c = parseFloat(document.getElementById('r3-c').value) || 0;
+      const uc = document.getElementById('r3-uc').value || 'mg';
+
+      const dispUb = document.getElementById('r3-display-ub');
+      if (dispUb) dispUb.textContent = ub;
+
+      const card = document.getElementById('r3-result-card');
+      if (!card) return;
+
+      const resX = (a > 0 && b > 0 && c > 0) ? (b * c) / a : null;
+
+      if (resX !== null) {
+        const formattedX = Number.isInteger(resX) ? resX : resX.toFixed(2).replace(/\.?0+$/, '');
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Resolução Visual Cruzada</span>
+              <span class="text-xs text-teal-700 font-medium">Multiplicação Cruzada</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="bg-gradient-to-r from-teal-500/10 to-blue-500/10 border border-teal-200 rounded-xl p-5">
+                <span class="text-xs font-semibold text-teal-800 uppercase tracking-wide block">Valor da Incógnita (X):</span>
+                <div class="mt-2 flex items-baseline gap-2">
+                  <span class="text-4xl font-bold text-teal-950 font-mono-numbers">${formattedX}</span>
+                  <span class="text-lg font-semibold text-teal-800">${ub}</span>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-3">Visualização da Proporção:</span>
+                <div class="max-w-md mx-auto grid grid-cols-3 items-center text-center py-2 font-mono-numbers">
+                  <div class="p-3 bg-white rounded-lg border border-slate-300 font-bold text-slate-800">${a} ${ua}</div>
+                  <div class="text-slate-400 font-sans text-xs">────────</div>
+                  <div class="p-3 bg-white rounded-lg border border-slate-300 font-bold text-slate-800">${b} ${ub}</div>
+
+                  <div class="p-3 bg-white rounded-lg border border-teal-300 font-bold text-teal-800 mt-3">${c} ${uc}</div>
+                  <div class="text-slate-400 font-sans text-xs mt-3">────────</div>
+                  <div class="p-3 bg-teal-500 text-white rounded-lg font-bold mt-3">X ${ub}</div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2 font-mono-numbers text-xs text-slate-700">
+                <span class="font-sans font-semibold text-slate-900 block mb-1">Passo a Passo Algébrico:</span>
+                <p>1. Cruzar: (${a}) · X = (${b}) · (${c})</p>
+                <p>2. Multiplicar: ${a} · X = ${(b * c).toFixed(2).replace(/\.?0+$/, '')}</p>
+                <p>3. Isolar o X: X = ${(b * c).toFixed(2).replace(/\.?0+$/, '')} / ${a}</p>
+                <p class="font-bold text-teal-700 text-sm pt-2 border-t border-slate-100 font-sans">
+                  → X = ${formattedX} ${ub}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-100 text-xs text-slate-500">
+            <span class="font-semibold text-slate-700">Regra Mnemônica:</span> Grandezas da mesma espécie sempre na mesma coluna (mg sob mg, mL sob mL).
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <p class="text-sm">Preencha os valores da proporção para ver a resolução passo a passo.</p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    /* ========================================================
+       CALCULATOR 4: CONVERSÕES & SOLUÇÕES %
+       ======================================================== */
+    function applySolPreset(percent, vol) {
+      document.getElementById('sol-percent').value = percent;
+      document.getElementById('sol-volume').value = vol;
+      calcConversions();
+    }
+
+    function calcConversions() {
+      // 1. Mass
+      const massVal = parseFloat(document.getElementById('conv-mass-val').value) || 0;
+      const massUnit = document.getElementById('conv-mass-unit').value;
+      let pivotMg = 0;
+      if (massUnit === 'g') pivotMg = massVal * 1000;
+      else if (massUnit === 'mg') pivotMg = massVal;
+      else if (massUnit === 'mcg') pivotMg = massVal / 1000;
+
+      const resG = pivotMg / 1000;
+      const resMg = pivotMg;
+      const resMcg = pivotMg * 1000;
+
+      const massCard = document.getElementById('conv-mass-results');
+      if (massCard) {
+        massCard.innerHTML = `
+          <span class="font-sans font-semibold text-slate-700 block text-xs">Valores Equivalentes:</span>
+          <div class="flex justify-between items-center p-2.5 bg-white rounded-lg border border-slate-200">
+            <span class="text-slate-500">Gramas (g):</span>
+            <span class="font-bold text-slate-900 text-sm">${resG.toLocaleString('pt-BR', { maximumFractionDigits: 6 })} g</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 bg-white rounded-lg border border-slate-200">
+            <span class="text-slate-500">Miligramas (mg):</span>
+            <span class="font-bold text-indigo-700 text-sm">${resMg.toLocaleString('pt-BR', { maximumFractionDigits: 4 })} mg</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 bg-white rounded-lg border border-slate-200">
+            <span class="text-slate-500">Microgramas (mcg):</span>
+            <span class="font-bold text-slate-900 text-sm">${resMcg.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} mcg</span>
+          </div>
+        `;
+      }
+
+      // 2. Volume
+      const volVal = parseFloat(document.getElementById('conv-vol-val').value) || 0;
+      const volUnit = document.getElementById('conv-vol-unit').value;
+      let pivotMl = 0;
+      if (volUnit === 'L') pivotMl = volVal * 1000;
+      else pivotMl = volVal;
+
+      const resL = pivotMl / 1000;
+      const resMl = pivotMl;
+
+      const volCard = document.getElementById('conv-vol-results');
+      if (volCard) {
+        volCard.innerHTML = `
+          <span class="font-sans font-semibold text-slate-700 block text-xs">Valores Equivalentes:</span>
+          <div class="flex justify-between items-center p-2.5 bg-white rounded-lg border border-slate-200">
+            <span class="text-slate-500">Litros (L):</span>
+            <span class="font-bold text-slate-900 text-sm">${resL.toLocaleString('pt-BR', { maximumFractionDigits: 4 })} L</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 bg-white rounded-lg border border-slate-200">
+            <span class="text-slate-500">Mililitros (mL):</span>
+            <span class="font-bold text-sky-700 text-sm">${resMl.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} mL</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 bg-white rounded-lg border border-slate-200">
+            <span class="text-slate-500">Gotas (macrogotas):</span>
+            <span class="font-bold text-slate-900 text-sm">${(resMl * 20).toLocaleString('pt-BR')} gotas</span>
+          </div>
+        `;
+      }
+
+      // 3. Solutions %
+      const sPercent = parseFloat(document.getElementById('sol-percent').value) || 0;
+      const sVol = parseFloat(document.getElementById('sol-volume').value) || 0;
+      const totalGrams = (sPercent * sVol) / 100;
+      const totalMg = totalGrams * 1000;
+
+      const solCard = document.getElementById('sol-result-card');
+      if (solCard) {
+        solCard.innerHTML = `
+          <div>
+            <span class="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-2">Significado da Porcentagem:</span>
+            <p class="text-xs text-slate-600 mb-3">
+              <strong>${sPercent}%</strong> significa que existem exatamente <strong>${sPercent} gramas</strong> de soluto puro a cada <strong>100 mL</strong> de solução.
+            </p>
+            <div class="bg-white p-3 rounded-lg border border-emerald-200 space-y-2">
+              <div class="text-xs text-slate-500">Massa de soluto puro no frasco (${sVol} mL):</div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold text-emerald-800 font-mono-numbers">${totalGrams.toLocaleString('pt-BR', { maximumFractionDigits: 3 })}</span>
+                <span class="text-base font-bold text-emerald-800">g de soluto</span>
+                <span class="text-xs text-slate-500 font-mono-numbers">(${totalMg.toLocaleString('pt-BR')} mg)</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 text-xs text-slate-500 pt-2 border-t border-slate-200">
+            Cálculo: (${sPercent} g × ${sVol} mL) / 100 mL = <strong>${totalGrams} g</strong>
+          </div>
+        `;
+      }
+    }
+
+    /* ========================================================
+       CALCULATOR 5: PENICILINA CRISTALINA
+       ======================================================== */
+    function setPenVial(type) {
+      penVialType = type;
+      const btn5m = document.getElementById('btn-pen-5m');
+      const btn10m = document.getElementById('btn-pen-10m');
+      if (type === '5M') {
+        btn5m.className = 'p-3 rounded-lg border text-left bg-violet-50 border-violet-400 ring-2 ring-violet-300/40';
+        btn10m.className = 'p-3 rounded-lg border text-left bg-white border-slate-200 hover:bg-slate-50';
+        document.getElementById('pen-added-water').value = 8;
+      } else {
+        btn5m.className = 'p-3 rounded-lg border text-left bg-white border-slate-200 hover:bg-slate-50';
+        btn10m.className = 'p-3 rounded-lg border text-left bg-violet-50 border-violet-400 ring-2 ring-violet-300/40';
+        document.getElementById('pen-added-water').value = 6;
+      }
+      calcPenicillin();
+    }
+
+    function setPenDose(ui) {
+      document.getElementById('pen-presc-ui').value = ui;
+      calcPenicillin();
+    }
+
+    function calcPenicillin() {
+      const vialUI = penVialType === '5M' ? 5000000 : 10000000;
+      const powderVol = penVialType === '5M' ? 2 : 4;
+      const water = parseFloat(document.getElementById('pen-added-water').value) || 0;
+      const prescUI = parseFloat(document.getElementById('pen-presc-ui').value) || 0;
+
+      const totalVol = water + powderVol;
+      const volAspirate = (vialUI > 0 && totalVol > 0 && prescUI > 0) ? (prescUI * totalVol) / vialUI : null;
+
+      const card = document.getElementById('pen-result-card');
+      if (!card) return;
+
+      if (volAspirate !== null && volAspirate > 0) {
+        const formattedVol = Number.isInteger(volAspirate) ? volAspirate : volAspirate.toFixed(2).replace(/\.?0+$/, '');
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Resolução e Volume Total</span>
+              <span class="text-xs text-violet-700 font-medium">${penVialType === '5M' ? 'Frasco 5.000.000 UI' : 'Frasco 10.000.000 UI'}</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="bg-gradient-to-r from-violet-500/10 to-indigo-500/10 border border-violet-200 rounded-xl p-5">
+                <span class="text-xs font-semibold text-violet-800 uppercase tracking-wide block">Volume a Aspirar do Frasco:</span>
+                <div class="mt-2 flex items-baseline gap-2">
+                  <span class="text-4xl font-bold text-violet-950 font-mono-numbers">${formattedVol}</span>
+                  <span class="text-lg font-semibold text-violet-800">mL</span>
+                </div>
+                <span class="text-xs text-slate-500 block mt-1">Correspondente a ${prescUI.toLocaleString('pt-BR')} UI.</span>
+              </div>
+
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-xs">
+                <span class="font-semibold text-slate-700 uppercase tracking-wider block mb-1">Composição do Volume no Frasco:</span>
+                <div class="grid grid-cols-3 gap-2 text-center font-mono-numbers">
+                  <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                    <span class="text-slate-400 block text-xs font-sans">Água Injetada</span>
+                    <span class="text-sm font-bold text-slate-800">${water} mL</span>
+                  </div>
+                  <div class="p-2.5 bg-white rounded-lg border border-amber-300">
+                    <span class="text-amber-700 block text-xs font-sans font-semibold">+ Volume do Pó</span>
+                    <span class="text-sm font-bold text-amber-900">${powderVol} mL</span>
+                  </div>
+                  <div class="p-2.5 bg-violet-100 rounded-lg border border-violet-300">
+                    <span class="text-violet-800 block text-xs font-sans font-semibold">= Volume Total</span>
+                    <span class="text-sm font-bold text-violet-950">${totalVol} mL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2 font-mono-numbers text-xs text-slate-700">
+                <span class="font-sans font-semibold text-slate-900 block mb-1">Montagem da Proporção:</span>
+                <p>${vialUI.toLocaleString('pt-BR')} UI ────── ${totalVol} mL</p>
+                <p>${prescUI.toLocaleString('pt-BR')} UI ────── X mL</p>
+                <p class="pt-1 text-slate-500">X = (${prescUI.toLocaleString('pt-BR')} × ${totalVol}) / ${vialUI.toLocaleString('pt-BR')}</p>
+                <p class="font-bold text-violet-800 text-sm flex items-center gap-1.5 pt-1 border-t border-slate-100 font-sans">
+                  → X = ${formattedVol} mL
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-100 text-xs text-slate-500">
+            <span class="font-semibold text-slate-700">Atenção Farmacológica:</span> Cada 1.000.000 UI contém cerca de 1,68 mEq de potássio. Monitorar eletrólitos em doses maciças.
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <p class="text-sm">Informe a dose prescrita para ver a resolução passo a passo.</p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    /* ========================================================
+       CALCULATOR 6: MODO TREINO (QUIZ)
+       ======================================================== */
+    const QUIZ_CATS = ['Todas', 'Dose e Volume', 'Gotejamento', 'Conversão', 'Penicilina', 'Solução/Concentração'];
+
+    function setQuizFilterCategory(cat) {
+      quizFilterCategory = cat;
+      currentQuizIndex = 0;
+      isQuizSubmitted = false;
+      showQuizExplanation = false;
+      renderQuiz();
+    }
+
+    function resetQuizScore() {
+      userQuizScores = {};
+      currentQuizIndex = 0;
+      isQuizSubmitted = false;
+      showQuizExplanation = false;
+      renderQuiz();
+    }
+
+    function getFilteredQuizList() {
+      if (quizFilterCategory === 'Todas') return QUIZ_QUESTIONS;
+      return QUIZ_QUESTIONS.filter((q) => q.category === quizFilterCategory);
+    }
+
+    function handleQuizSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('quiz-user-input');
+      if (!input || !input.value.trim()) return;
+
+      const filtered = getFilteredQuizList();
+      const q = filtered[currentQuizIndex];
+      const val = parseFloat(input.value.replace(',', '.'));
+      const isCorrect = Math.abs(val - q.correctAnswer) <= (q.tolerance || 0.05);
+
+      isQuizSubmitted = true;
+      showQuizExplanation = true;
+      userQuizScores[q.id] = isCorrect;
+      renderQuiz();
+    }
+
+    function quizNext() {
+      const filtered = getFilteredQuizList();
+      if (currentQuizIndex < filtered.length - 1) {
+        currentQuizIndex++;
+        isQuizSubmitted = false;
+        showQuizExplanation = false;
+        renderQuiz();
+      }
+    }
+
+    function quizPrev() {
+      if (currentQuizIndex > 0) {
+        currentQuizIndex--;
+        isQuizSubmitted = false;
+        showQuizExplanation = false;
+        renderQuiz();
+      }
+    }
+
+    function toggleQuizExplanation() {
+      showQuizExplanation = !showQuizExplanation;
+      renderQuiz();
+    }
+
+    function renderQuiz() {
+      // Categories pills
+      const catCont = document.getElementById('quiz-categories');
+      if (catCont) {
+        catCont.innerHTML = `
+          <span class="text-xs font-semibold text-slate-400 mr-1">Filtrar Categoria:</span>
+          ${QUIZ_CATS.map((c) => `
+            <button onclick="setQuizFilterCategory('${c}')" class="text-xs px-2.5 py-1 rounded-md transition-colors ${
+              quizFilterCategory === c ? 'bg-teal-600 text-white font-medium shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }">
+              ${c}
+            </button>
+          `).join('')}
+        `;
+      }
+
+      // Score badge
+      const totalAnswered = Object.keys(userQuizScores).length;
+      const correctCount = Object.values(userQuizScores).filter(Boolean).length;
+      const scorePct = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+      const scoreBadge = document.getElementById('quiz-score-badge');
+      if (scoreBadge) scoreBadge.textContent = `${correctCount} / ${totalAnswered} (${scorePct}%)`;
+
+      const filtered = getFilteredQuizList();
+      const card = document.getElementById('quiz-card');
+      if (!card) return;
+
+      if (filtered.length === 0) {
+        card.innerHTML = `<div class="p-8 text-center text-slate-400">Nenhuma questão nesta categoria.</div>`;
+        return;
+      }
+
+      const q = filtered[currentQuizIndex] || filtered[0];
+      const isAnswered = isQuizSubmitted || userQuizScores[q.id] !== undefined;
+      const isCorrect = userQuizScores[q.id] === true;
+
+      card.innerHTML = `
+        <div class="p-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 bg-slate-50/60">
+          <div class="flex items-center gap-2 text-xs">
+            <span class="font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+              Questão ${currentQuizIndex + 1} de ${filtered.length}
+            </span>
+            <span class="text-slate-400">·</span>
+            <span class="text-slate-600 font-medium">${q.category}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="quizPrev()" ${currentQuizIndex === 0 ? 'disabled' : ''} class="flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-30">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Anterior
+            </button>
+            <button onclick="quizNext()" ${currentQuizIndex === filtered.length - 1 ? 'disabled' : ''} class="flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-30">
+              Próxima <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 space-y-5">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 mb-2">${q.title}</h3>
+            <p class="text-sm text-slate-600">${q.scenario}</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-teal-50/60 border border-teal-200 rounded-lg">
+              <span class="font-semibold text-teal-900 block mb-1">Prescrição Médica:</span>
+              <span class="text-slate-800 font-mono-numbers">${q.prescription}</span>
+            </div>
+            <div class="p-3 bg-blue-50/60 border border-blue-200 rounded-lg">
+              <span class="font-semibold text-blue-900 block mb-1">Disponível no Posto de Enfermagem:</span>
+              <span class="text-slate-800 font-mono-numbers">${q.available}</span>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-sm font-semibold text-slate-800">
+            ${q.question}
+          </div>
+
+          <form onsubmit="handleQuizSubmit(event)" class="space-y-4">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div class="flex items-center gap-2">
+                <input
+                  id="quiz-user-input"
+                  type="text"
+                  placeholder="Sua resposta"
+                  ${isAnswered ? 'disabled' : ''}
+                  class="w-40 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-teal-500 font-mono-numbers"
+                >
+                <span class="text-sm font-medium text-slate-600">${q.unit}</span>
+              </div>
+              ${!isAnswered ? `
+                <button type="submit" class="bg-teal-700 hover:bg-teal-800 text-white font-medium text-sm px-5 py-2 rounded-lg transition-colors shadow-xs">
+                  Verificar Resposta
+                </button>
+              ` : `
+                <button type="button" onclick="resetCurrentQuizQuestion('${q.id}')" class="text-xs text-slate-500 hover:text-slate-800 underline px-3 py-2">
+                  Tentar Novamente
+                </button>
+              `}
+            </div>
+          </form>
+
+          ${isAnswered ? `
+            <div class="p-4 rounded-xl border flex items-start gap-3 ${isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'}">
+              <i data-lucide="${isCorrect ? 'check-circle' : 'x-circle'}" class="w-5 h-5 ${isCorrect ? 'text-emerald-600' : 'text-rose-600'} shrink-0 mt-0.5"></i>
+              <div>
+                <div class="font-bold text-sm">${isCorrect ? 'Resposta Correta! Parabéns!' : 'Resposta Incorreta.'}</div>
+                <div class="text-xs mt-1">Resposta exata: <strong>${q.correctAnswer} ${q.unit}</strong>.</div>
+              </div>
+            </div>
+          ` : ''}
+
+          <div>
+            <button onclick="toggleQuizExplanation()" class="flex items-center gap-1.5 text-xs font-semibold text-teal-700 hover:text-teal-900 py-1">
+              <i data-lucide="${showQuizExplanation ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4"></i>
+              ${showQuizExplanation ? 'Ocultar Resolução Passo a Passo' : 'Ver Resolução Passo a Passo'}
+            </button>
+
+            ${showQuizExplanation ? `
+              <div class="mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 font-mono-numbers text-xs">
+                <span class="font-sans font-semibold text-slate-800 block text-xs">Demonstração Matemática:</span>
+                <div class="space-y-1.5 text-slate-700">
+                  ${q.stepByStep.map((s) => `<div class="leading-relaxed">${s}</div>`).join('')}
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-200 text-xs font-sans text-slate-600 flex items-start gap-2 bg-amber-50/60 p-3 rounded-lg border border-amber-200">
+                  <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                  <div>
+                    <strong class="text-amber-900">Dica Prática de Enfermagem: </strong>
+                    ${q.nursingTip}
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      lucide.createIcons();
+    }
+
+    function resetCurrentQuizQuestion(qid) {
+      delete userQuizScores[qid];
+      isQuizSubmitted = false;
+      showQuizExplanation = false;
+      renderQuiz();
+    }
+
+    /* ========================================================
+       PAGE INITIALIZATION
+       ======================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      initFilters();
+      renderDrugsGrid();
+      calcDoseVolume();
+      calcDripRate();
+      calcRuleOfThree();
+      calcConversions();
+      calcPenicillin();
+      renderQuiz();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
