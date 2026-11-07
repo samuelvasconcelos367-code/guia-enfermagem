@@ -127,7 +127,7 @@
 
     <!-- ================= VIEW 1: GUIA DE MEDICAMENTOS ================= -->
     <section id="view-drugs" class="space-y-6">
-      <!-- Hero Banner -->
+      <!-- Hero Banner (Item 1: Atualização de Título) -->
       <div class="bg-gradient-to-r from-teal-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm">
         <div class="max-w-2xl">
           <span class="text-xs font-semibold uppercase tracking-wider text-teal-300 block mb-1">
@@ -182,11 +182,22 @@
 
         <!-- Route & High-alert & Bookmark Toggles -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <span class="text-slate-500 font-medium">Via:</span>
             <div id="routes-container" class="flex gap-1 bg-slate-100 p-0.5 rounded-lg">
               <!-- Dynamically populated routes -->
             </div>
+            
+            <!-- Item 2: Botão para abrir legenda de vias explicativa -->
+            <button
+              type="button"
+              onclick="toggleRouteLegend()"
+              class="flex items-center gap-1 text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100/70 px-2 py-1 rounded-md transition-colors font-medium ml-1"
+              title="Clique para ver o significado de cada via"
+            >
+              <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              <span id="route-legend-toggle-text">O que significam as vias?</span>
+            </button>
           </div>
 
           <div class="flex items-center gap-2">
@@ -209,6 +220,45 @@
             </button>
           </div>
         </div>
+
+        <!-- Item 2: Painel de Cartões de Legenda de Vias de Administração para leigos -->
+        <div id="route-legend-panel" class="hidden mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+            <div class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-teal-900">
+              <i data-lucide="book-open" class="w-4 h-4 text-teal-600"></i>
+              Guia Explicativo das Vias de Administração
+            </div>
+            <button onclick="toggleRouteLegend()" class="text-xs text-slate-400 hover:text-slate-700">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
+              <span class="font-bold text-teal-800 text-sm block mb-1">EV / IV:</span>
+              <p class="text-slate-700 leading-relaxed">
+                <strong>Endovenosa ou Intravenosa</strong> (o medicamento é injetado diretamente na veia, entrando logo na corrente sanguínea).
+              </p>
+            </div>
+            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
+              <span class="font-bold text-teal-800 text-sm block mb-1">VO:</span>
+              <p class="text-slate-700 leading-relaxed">
+                <strong>Via Oral</strong> (o medicamento é ingerido pela boca, como comprimidos, cápsulas ou xaropes).
+              </p>
+            </div>
+            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
+              <span class="font-bold text-teal-800 text-sm block mb-1">IM:</span>
+              <p class="text-slate-700 leading-relaxed">
+                <strong>Intramuscular</strong> (o medicamento é injetado profundamente no músculo, como a vacina do tétano ou a Benzetacil).
+              </p>
+            </div>
+            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
+              <span class="font-bold text-teal-800 text-sm block mb-1">SC:</span>
+              <p class="text-slate-700 leading-relaxed">
+                <strong>Subcutânea</strong> (o medicamento é injetado na camada de gordura que fica logo abaixo da pele, como é o caso da insulina ou de anticoagulantes como o Clexane).
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Counter -->
@@ -219,6 +269,17 @@
       <!-- Drugs Grid -->
       <div id="drugs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Drug Cards populated by JS -->
+      </div>
+
+      <!-- Item 3: Rodapé e Fonte de Dados Oficial ANVISA -->
+      <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+        <div class="flex items-start sm:items-center gap-2.5">
+          <i data-lucide="shield-check" class="w-5 h-5 text-teal-600 shrink-0 mt-0.5 sm:mt-0"></i>
+          <div>
+            <strong class="text-slate-800 font-semibold block sm:inline">Fonte de Dados Oficial:</strong>
+            <span> As informações contidas neste guia foram extraídas das bulas oficiais disponibilizadas pela ANVISA. Consulte o <a href="https://consultas.anvisa.gov.br/#/bulario/" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold underline inline-flex items-center gap-0.5">Bulário Eletrónico da ANVISA <i data-lucide="external-link" class="w-3 h-3 inline"></i></a> para informações completas.</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1589,6 +1650,7 @@
     let selectedRoute = 'Todas';
     let filterHighAlert = false;
     let filterBookmarks = false;
+    let isRouteLegendOpen = false;
     let bookmarkedIds = [];
 
     // Quiz state
@@ -1625,6 +1687,23 @@
     function updateBookmarkCount() {
       const el = document.getElementById('bookmark-count');
       if (el) el.textContent = bookmarkedIds.length;
+    }
+
+    // Item 2: Toggle painel de legenda de vias
+    function toggleRouteLegend() {
+      isRouteLegendOpen = !isRouteLegendOpen;
+      const panel = document.getElementById('route-legend-panel');
+      const toggleText = document.getElementById('route-legend-toggle-text');
+      if (panel) {
+        if (isRouteLegendOpen) {
+          panel.classList.remove('hidden');
+          if (toggleText) toggleText.textContent = 'Ocultar legenda das vias';
+        } else {
+          panel.classList.add('hidden');
+          if (toggleText) toggleText.textContent = 'O que significam as vias?';
+        }
+      }
+      lucide.createIcons();
     }
 
     /* ========================================================
@@ -1700,7 +1779,13 @@
       'Eletrólitos e Emergência'
     ];
 
-    const ROUTES = ['Todas', 'EV / IV', 'VO', 'IM', 'SC'];
+    const ROUTES = [
+      { id: 'Todas', label: 'Todas', tooltip: 'Todas as vias de administração' },
+      { id: 'EV / IV', label: 'EV / IV', tooltip: 'Endovenosa ou Intravenosa (o medicamento é injetado diretamente na veia, entrando logo na corrente sanguínea).' },
+      { id: 'VO', label: 'VO', tooltip: 'Via Oral (o medicamento é ingerido pela boca, como comprimidos, cápsulas ou xaropes).' },
+      { id: 'IM', label: 'IM', tooltip: 'Intramuscular (o medicamento é injetado profundamente no músculo, como a vacina do tétano ou a Benzetacil).' },
+      { id: 'SC', label: 'SC', tooltip: 'Subcutânea (o medicamento é injetado na camada de gordura que fica logo abaixo da pele, como é o caso da insulina ou de anticoagulantes como o Clexane).' }
+    ];
 
     function initFilters() {
       // Populate categories
@@ -1716,16 +1801,17 @@
         </button>
       `).join('');
 
-      // Populate routes
+      // Populate routes with tooltips
       const routeCont = document.getElementById('routes-container');
       routeCont.innerHTML = ROUTES.map((r) => `
         <button
-          onclick="setDrugRoute('${r}')"
+          onclick="setDrugRoute('${r.id}')"
+          title="${r.tooltip}"
           class="route-btn px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
-            selectedRoute === r ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            selectedRoute === r.id ? 'bg-white text-slate-900 shadow-2xs font-bold' : 'text-slate-600 hover:text-slate-900'
           }"
         >
-          ${r}
+          ${r.label}
         </button>
       `).join('');
 
@@ -1861,6 +1947,7 @@
 
       grid.innerHTML = filtered.map((d) => {
         const isBmk = bookmarkedIds.includes(d.id);
+        const hasVO = d.routes.includes('VO');
         return `
           <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs hover:border-teal-300 hover:shadow-sm transition-all flex flex-col justify-between group">
             <div>
@@ -1885,20 +1972,35 @@
 
               <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-3">${d.summary}</p>
 
-              <div class="text-xs text-slate-500 mb-4 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <div class="text-xs text-slate-500 mb-3 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
                 <span class="font-semibold text-slate-700 block mb-0.5">Indicações frequentes:</span>
                 <span class="text-slate-600 line-clamp-1">${d.indications.join(' · ')}</span>
               </div>
+
+              <!-- Item 4: Alerta VO nos medicamentos por via oral -->
+              ${hasVO ? `
+                <div class="mb-3 p-2 bg-amber-50/70 border border-amber-200 rounded-lg text-[11px] text-amber-900 flex items-start gap-1.5">
+                  <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5"></i>
+                  <span class="line-clamp-2"><strong>Aviso VO:</strong> Comprimidos sólidos não devem ser divididos ou triturados sem confirmação do enfermeiro/farmacêutico.</span>
+                </div>
+              ` : ''}
             </div>
 
-            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-              <button onclick="openDrugModal('${d.id}')" class="flex-1 flex items-center justify-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100/70 py-2 rounded-lg transition-colors">
-                Ver Resumo Completo
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-              </button>
-              <button onclick="sendDrugToCalc('${d.id}')" title="Calcular dose deste remédio" class="p-2 text-slate-500 hover:text-teal-700 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors">
-                <i data-lucide="sparkles" class="w-4 h-4"></i>
-              </button>
+            <div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                <button onclick="openDrugModal('${d.id}')" class="flex-1 flex items-center justify-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100/70 py-2 rounded-lg transition-colors">
+                  Ver Resumo Completo
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="sendDrugToCalc('${d.id}')" title="Calcular dose deste remédio" class="p-2 text-slate-500 hover:text-teal-700 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors">
+                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </button>
+              </div>
+
+              <!-- Item 3: Fonte ANVISA em cada cartão -->
+              <div class="mt-2 text-[10px] text-slate-400 text-center truncate">
+                Fonte: <a href="https://consultas.anvisa.gov.br/#/bulario/" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:underline">Bulário Eletrônico ANVISA</a>
+              </div>
             </div>
           </div>
         `;
@@ -1920,6 +2022,7 @@
       const modal = document.getElementById('drug-modal');
       const content = document.getElementById('drug-modal-content');
       const isBmk = bookmarkedIds.includes(drug.id);
+      const hasVO = drug.routes.includes('VO');
 
       content.innerHTML = `
         <div class="p-5 sm:p-6 border-b border-slate-100 flex items-start justify-between gap-4 bg-slate-50/70">
@@ -2005,7 +2108,8 @@
             ` : ''}
           </div>
 
-          <div class="p-4 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
+          <!-- Cuidados de Enfermagem -->
+          <div class="p-4 bg-blue-50/70 border border-blue-200 rounded-xl space-y-3">
             <span class="text-xs font-bold uppercase tracking-wider text-blue-900 flex items-center gap-1.5">
               <i data-lucide="heart-pulse" class="w-4 h-4 text-blue-600"></i>
               Cuidados Fundamentais de Enfermagem
@@ -2013,6 +2117,19 @@
             <ul class="space-y-2 text-xs text-blue-950">
               ${drug.nursingPrecautions.map((care) => `<li class="flex items-start gap-2"><span class="text-blue-500 font-bold shrink-0 mt-0.5">•</span><span class="leading-relaxed">${care}</span></li>`).join('')}
             </ul>
+
+            <!-- Item 4: Alerta Obrigatório sobre Via Oral (VO) com texto exato solicitado -->
+            ${hasVO ? `
+              <div class="mt-3 p-3.5 bg-amber-50 border border-amber-300 rounded-xl text-amber-950 text-xs space-y-1">
+                <div class="font-bold flex items-center gap-1.5 text-amber-900">
+                  <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                  Aviso de Segurança: Administração por Via Oral (VO)
+                </div>
+                <p class="leading-relaxed">
+                  Aviso sobre Via Oral: Comprimidos sólidos não devem ser divididos, triturados ou dissolvidos em todos os casos (especialmente os de libertação prolongada ou com revestimento entérico). Verifique sempre com o enfermeiro responsável ou farmacêutico a possibilidade e o método correto de administração antes de o fazer.
+                </p>
+              </div>
+            ` : ''}
           </div>
 
           <div class="space-y-3">
@@ -2026,6 +2143,15 @@
                   </div>
                 </div>
               `).join('')}
+            </div>
+          </div>
+
+          <!-- Item 3: Citação e Fonte ANVISA no Modal com Link -->
+          <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-start gap-2.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-teal-600 shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="text-slate-800 font-semibold block mb-0.5">Fonte de Dados Oficial:</strong>
+              As informações contidas neste guia foram extraídas das bulas oficiais disponibilizadas pela ANVISA. Consulte o <a href="https://consultas.anvisa.gov.br/#/bulario/" target="_blank" rel="noopener noreferrer" class="text-teal-700 font-semibold underline inline-flex items-center gap-0.5">Bulário Eletrónico da ANVISA <i data-lucide="external-link" class="w-3 h-3 inline"></i></a> para informações completas.
             </div>
           </div>
         </div>
@@ -2594,7 +2720,7 @@
             </div>
           </div>
           <div class="mt-3 text-xs text-slate-500 pt-2 border-t border-slate-200">
-            Cálculo: (${sPercent} g × ${sVol} mL) / 100 mL = <strong>${totalGrams} g</strong>
+            Cálculo: (${sPercent} g × {sVol} mL) / 100 mL = <strong>${totalGrams} g</strong>
           </div>
         `;
       }
